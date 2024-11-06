@@ -74,19 +74,19 @@ export function deleteCookie(name: Tokens) {
 
 export const setToken = (token: string) => {
   if (typeof window !== 'undefined') {
-    localStorage.setItem('starterToken', token)
+    localStorage.setItem('zephToken', token)
   }
 }
 
 export const getToken = (): string | null => {
   if (typeof window !== 'undefined') {
-    return localStorage.getItem('starterToken')
+    return localStorage.getItem('zephToken')
   }
   return null
 }
 
 export const removeToken = () => {
   if (typeof window !== 'undefined') {
-    localStorage.removeItem('starterToken')
+    localStorage.removeItem('zephToken')
   }
 }

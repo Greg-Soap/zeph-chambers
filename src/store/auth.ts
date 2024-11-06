@@ -1,8 +1,9 @@
+import type { User } from '@/types/user'
 import { action, type Computed, computed, type Action } from 'easy-peasy'
 
 export interface AuthStoreModel {
-  user: { id: string; name: string; email: string } | null
-  setUser: Action<AuthStoreModel, { id: string; name: string; email: string }>
+  user: User | null
+  setUser: Action<AuthStoreModel, User>
   clearUser: Action<AuthStoreModel>
   isAuthenticated: Computed<AuthStoreModel, boolean>
 }
