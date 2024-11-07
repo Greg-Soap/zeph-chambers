@@ -1,4 +1,6 @@
-import { useNavigate } from "react-router-dom";
+"use client";
+
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -10,6 +12,7 @@ import { toast } from "sonner";
 import { useAppStore } from "@/store/use-app-store";
 import zephService from "@/services/zeph.service";
 import { useMutation } from "@tanstack/react-query";
+import Link from "next/link";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email address"),
@@ -19,7 +22,7 @@ const loginSchema = z.object({
 type LoginFormData = z.infer<typeof loginSchema>;
 
 export default function Login() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { setUser } = useAppStore();
 
   const form = useForm<LoginFormData>({
@@ -36,7 +39,7 @@ export default function Login() {
       toast.success("Login successful!");
       localStorage.setItem("zephToken", data?.data?.token);
       setUser(data?.data?.user);
-      navigate("/");
+      router.push("/");
     },
     onError: (error) => {
       //@ts-expect-error wrong type
@@ -78,6 +81,18 @@ export default function Login() {
           <Button type="submit" className="w-full" disabled={isPending}>
             {isPending ? "Signing in..." : "Sign in"}
           </Button>
+
+          <div className="text-center text-sm">
+            <span className="text-muted-foreground">
+              Don't have an account?{" "}
+            </span>
+            <Link
+              href="/auth/register"
+              className="text-primary hover:underline font-medium"
+            >
+              Sign up
+            </Link>
+          </div>
         </FormBase>
       </div>
     </div>

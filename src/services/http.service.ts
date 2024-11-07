@@ -5,7 +5,10 @@ export const multipartHeaders = {
   headers: { 'Content-Type': 'multipart/form-data' },
 }
 
-const apiUrl = process.env.NODE_ENV === 'development' ? process.env.API_DEV : process.env.API_PROD
+const apiUrl =
+  process.env.NODE_ENV === 'development'
+    ? process.env.NEXT_PUBLIC_API_DEV
+    : process.env.NEXT_PUBLIC_API_PROD
 
 const api = axios.create({
   baseURL: apiUrl,

@@ -1,10 +1,12 @@
+"use client";
+
 import Layout from "@/layout/layout";
 import { Button } from "@/components/ui/button";
 import { FadeText } from "@/components/animations/fade";
 import { Box2, House2 } from "iconsax-react";
 import { CircleUserRound, Handshake } from "lucide-react";
 
-export default function Root() {
+export default function Home() {
   return (
     <Layout>
       <div className="bg-background flex flex-col items-center justify-start">

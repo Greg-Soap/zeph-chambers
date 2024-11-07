@@ -1,3 +1,5 @@
+"use client";
+
 import { getToken } from "@/lib/cookies";
 import { useGlobalAction, useGlobalStore } from "./store-hooks";
 

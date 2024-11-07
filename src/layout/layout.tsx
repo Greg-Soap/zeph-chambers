@@ -1,9 +1,16 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
-import Footer from "./footer";
 import { BoxReveal } from "@/components/ui/box-reveal";
 import colors from "@/lib/custom-colors";
+import Footer from "./footer";
+import Link from "next/link";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function HomeLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <div className="flex flex-col min-h-screen">
       <div className="relative min-h-screen">
@@ -40,7 +47,9 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             </BoxReveal>
           </div>
           <BoxReveal boxColor={colors.primary.DEFAULT} duration={1.8}>
-            <Button size="lg">Get Started</Button>
+            <Button size="lg">
+              <Link href="/auth/login">Get Started</Link>
+            </Button>
           </BoxReveal>
         </div>
       </div>

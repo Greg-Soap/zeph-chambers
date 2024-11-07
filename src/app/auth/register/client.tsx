@@ -1,4 +1,5 @@
-import { useNavigate } from "react-router-dom";
+"use client";
+
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -7,10 +8,11 @@ import { Button } from "@/components/ui/button";
 import { FormBase, FormField } from "@/components/customs/custom-form";
 import { CustomInput } from "@/components/customs/custom-input";
 import { toast } from "sonner";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import { useAppStore } from "@/store/use-app-store";
 import { useMutation } from "@tanstack/react-query";
 import zephService from "@/services/zeph.service";
+import { useRouter } from "next/navigation";
 
 const registerSchema = z
   .object({
@@ -33,7 +35,7 @@ const registerSchema = z
 type RegisterFormData = z.infer<typeof registerSchema>;
 
 export default function Register() {
-  const navigate = useNavigate();
+  const router = useRouter();
   const { setUser } = useAppStore();
 
   const form = useForm<RegisterFormData>({
@@ -52,7 +54,7 @@ export default function Register() {
       toast.success("Registration successful!");
       localStorage.setItem("zephToken", data?.data?.token);
       setUser(data?.data?.user);
-      navigate("/login");
+      router.push("/auth/login");
     },
     onError: (error) => {
       //@ts-expect-error wrong type
@@ -123,7 +125,7 @@ export default function Register() {
               Already have an account?{" "}
             </span>
             <Link
-              to="/login"
+              href="/auth/login"
               className="text-primary hover:underline font-medium"
             >
               Sign in
