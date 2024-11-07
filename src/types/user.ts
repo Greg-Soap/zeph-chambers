@@ -1,5 +1,10 @@
 export interface User {
-  id: string
-  name: string
-  email: string
+  id: string;
+  fullName: string;
+  email: string;
+  createdAt: string;
+  updatedAt: string;
+  isEmailVerified: boolean;
+  isArchived: boolean;
+  otpSecret: string;
 }

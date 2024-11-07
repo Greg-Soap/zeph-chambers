@@ -16,7 +16,7 @@ import { useRouter } from "next/navigation";
 
 const registerSchema = z
   .object({
-    name: z.string().min(2, "Name must be at least 2 characters"),
+    fullName: z.string().min(2, "Name must be at least 2 characters"),
     email: z.string().email("Invalid email address"),
     password: z
       .string()
@@ -41,7 +41,7 @@ export default function Register() {
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      name: "",
+      fullName: "",
       email: "",
       password: "",
       confirmPassword: "",
@@ -51,7 +51,8 @@ export default function Register() {
   const { mutate: register, isPending } = useMutation({
     mutationFn: zephService.register,
     onSuccess: (data) => {
-      toast.success("Registration successful!");
+      console.log({ data });
+      toast.success(data?.data?.message || "Registration successful!");
       localStorage.setItem("zephToken", data?.data?.token);
       setUser(data?.data?.user);
       router.push("/auth/login");
@@ -79,7 +80,7 @@ export default function Register() {
         </div>
 
         <FormBase form={form} onSubmit={handleSubmit} className="space-y-4">
-          <FormField form={form} name="name" label="Full Name" showMessage>
+          <FormField form={form} name="fullName" label="Full Name" showMessage>
             <CustomInput
               variant="input"
               placeholder="Enter your full name"

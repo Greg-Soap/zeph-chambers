@@ -36,10 +36,10 @@ export default function Login() {
   const { mutate: login, isPending } = useMutation({
     mutationFn: zephService.login,
     onSuccess: (data) => {
-      toast.success("Login successful!");
+      toast.success(data?.data?.message || "Login successful!");
       localStorage.setItem("zephToken", data?.data?.token);
       setUser(data?.data?.user);
-      router.push("/");
+      router.push("/dashboard");
     },
     onError: (error) => {
       //@ts-expect-error wrong type
