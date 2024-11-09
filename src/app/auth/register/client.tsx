@@ -35,8 +35,7 @@ const registerSchema = z
 type RegisterFormData = z.infer<typeof registerSchema>;
 
 export default function Register() {
-  const router = useRouter();
-  const { setUser } = useAppStore();
+  const router = useRouter(); 
 
   const form = useForm<RegisterFormData>({
     resolver: zodResolver(registerSchema),
@@ -51,11 +50,8 @@ export default function Register() {
   const { mutate: register, isPending } = useMutation({
     mutationFn: zephService.register,
     onSuccess: (data) => {
-      console.log({ data });
-      toast.success(data?.data?.message || "Registration successful!");
-      localStorage.setItem("zephToken", data?.data?.token);
-      setUser(data?.data?.user);
-      router.push("/auth/login");
+      toast.success(data?.data?.message || "Registration successful! Please verify your email.");
+      router.push(`/auth/verify-otp?email=${encodeURIComponent(data?.data?.user.email)}`);
     },
     onError: (error) => {
       //@ts-expect-error wrong type
