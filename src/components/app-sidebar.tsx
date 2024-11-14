@@ -24,17 +24,17 @@ import { toast } from 'sonner'
 const items = [
   {
     title: 'Agreements',
-    icon: <Handshake size={24} />,
+    icon: <Handshake size={32} className='w-[32px] h-[32px]' />,
     url: '/dashboard/agreements',
   },
   {
     title: 'Litigations',
-    icon: <Box2 size={24} variant='Bold' color='black' />,
+    icon: <Box2 size={32} variant='Bold' color='black' className='w-[32px] h-[32px]' />,
     url: '/dashboard/litigations',
   },
   {
     title: 'Incorporation',
-    icon: <UserOctagon size={24} variant='Bold' color='black' />,
+    icon: <UserOctagon size={32} variant='Bold' color='black' className='w-[32px] h-[32px]' />,
     url: '/dashboard/incorporation',
   },
 ]
@@ -65,11 +65,8 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={pathname === item.url}
-                    className='py-3 h-full'>
+                <SidebarMenuItem key={item.title} className='py-2'>
+                  <SidebarMenuButton isActive={pathname === item.url} className='py-3 h-full'>
                     <Link href={item.url} className='flex items-center gap-2 text-xl mb-2 h-full'>
                       {item.icon}
                       <span>{item.title}</span>
@@ -85,7 +82,7 @@ export function AppSidebar() {
             <SidebarMenu>
               <SidebarMenuItem>
                 <SidebarMenuButton className='py-3 h-full text-xl' onClick={() => logout()}>
-                  <LogOut size={24} />
+                  <LogOut size={32} />
                   <span>Logout</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
