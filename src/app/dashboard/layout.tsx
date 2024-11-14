@@ -1,5 +1,6 @@
 import { AppSidebar } from '@/components/app-sidebar'
-import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar'
+import { CustomTrigger } from '@/components/sidebar-trigger'
+import { SidebarProvider } from '@/components/ui/sidebar'
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -18,7 +19,7 @@ export default function DashboardLayout({
         <AppSidebar />
         <main className='flex-1 overflow-x-hidden'>
           <div className='container mx-auto px-4 py-6'>
-            <SidebarTrigger className='mb-4' />
+            <CustomTrigger />
             {children}
           </div>
         </main>

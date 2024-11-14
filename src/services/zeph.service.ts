@@ -1,6 +1,5 @@
 import type { Login, Register } from '@/types/auth'
 import api from './http.service'
-import { removeToken } from '@/lib/cookies'
 import type { User } from '@/types/user'
 
 class ZephService {
@@ -52,7 +51,7 @@ class ZephService {
   }
 
   static logout() {
-    removeToken()
+    return api.post<{ message: string }>('/auth/logout')
   }
 }
 
