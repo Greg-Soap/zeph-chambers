@@ -15,9 +15,9 @@ export default function DashboardLayout({
 }) {
   return (
     <SidebarProvider>
-      <div className='flex min-h-screen w-full'>
+      <div className='flex min-h-screen w-full bg-[#1E2330]'>
         <AppSidebar />
-        <main className='flex-1 overflow-x-hidden'>
+        <main className='flex-1 overflow-x-hidden bg-[#1E2330]'>
           <div className='container mx-auto px-4 py-6'>
             <CustomTrigger />
             {children}

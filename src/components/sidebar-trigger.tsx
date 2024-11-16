@@ -8,8 +8,11 @@ export function CustomTrigger() {
   const { toggleSidebar } = useSidebar()
 
   return (
-    <Button onClick={toggleSidebar} variant='outline' className='mb-4 rounded-[8px]'>
-      <MenuIcon className='w-4 h-4' />
+    <Button
+      onClick={toggleSidebar}
+      variant='outline'
+      className='mb-4 rounded-[8px] bg-primary hover:bg-primary/80 transition-colors duration-300'>
+      <MenuIcon className='w-4 h-4 text-white hover:text-white/80 transition-colors duration-300' />
     </Button>
   )
 }

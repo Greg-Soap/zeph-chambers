@@ -79,7 +79,7 @@
 
 @layer base {
   * {
-    @apply border-border;
+    @apply border-border/30;
   }
   html {
     font-family: "Montserrat", system-ui, sans-serif;

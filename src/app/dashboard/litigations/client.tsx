@@ -1,8 +1,5 @@
 'use client'
 
-import { useState } from 'react'
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
-
 interface Litigation {
   header: string
   body: string[]
@@ -10,17 +7,14 @@ interface Litigation {
 
 interface LitigationCardProps {
   litigation: Litigation
-  onClick: () => void
 }
 
-function LitigationCard({ litigation, onClick }: LitigationCardProps) {
+function LitigationCard({ litigation }: LitigationCardProps) {
   return (
-    <button
-      type='button'
-      className='bg-card p-4 sm:p-6 lg:p-10 hover:scale-105 transition ease-in-out duration-200 
+    <div
+      className='bg-dark-navy text-white p-4 sm:p-6 lg:p-10 hover:scale-105 transition ease-in-out duration-200 
                  hover:border hover:border-primary flex flex-col 
-                 w-full md:w-[46%] xl:w-[48%] max-w-[600px] rounded-lg shadow-md'
-      onClick={onClick}>
+                 w-full md:w-[46%] xl:w-[48%] max-w-[600px] rounded-lg shadow-md'>
       <h2 className='text-2xl sm:text-3xl lg:text-4xl text-primary font-heading font-semibold text-center mb-4 sm:mb-6'>
         {litigation.header}
       </h2>
@@ -28,39 +22,29 @@ function LitigationCard({ litigation, onClick }: LitigationCardProps) {
       {litigation.body.map((item, index) => (
         // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
         <div key={index} className='mb-3 sm:mb-4 last:mb-0'>
-          <p className='text-base sm:text-lg text-foreground text-left'>{item}</p>
-          <hr className='border-border mt-3 sm:mt-4' />
+          <p className='text-base sm:text-lg text-white text-left'>{item}</p>
+          <hr className='border-border/10 mt-3 sm:mt-4' />
         </div>
       ))}
-    </button>
+    </div>
   )
 }
 
 export default function Litigation() {
-  const [selectedLitigation, setSelectedLitigation] = useState<Litigation | null>(null)
-
-  function handleOpenModal(litigation: Litigation) {
-    setSelectedLitigation(litigation)
-  }
-
-  function handleCloseModal() {
-    setSelectedLitigation(null)
-  }
-
   return (
-    <div className='w-full min-h-screen bg-background p-4 sm:p-6'>
+    <div className='w-full min-h-screen bg-navy text-white p-4 sm:p-6'>
       <div className='max-w-7xl mx-auto space-y-8 sm:space-y-12 lg:space-y-16'>
         <div className='text-center space-y-4 sm:space-y-6'>
           <h1 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-primary font-heading font-bold'>
             LITIGATIONS
           </h1>
 
-          <p className='text-lg sm:text-xl lg:text-2xl text-foreground font-medium max-w-3xl mx-auto'>
+          <p className='text-lg sm:text-xl lg:text-2xl text-white font-medium max-w-3xl mx-auto'>
             Navigating the complex landscape of legal disputes requires strategic expertise and a
             deep understanding of the law.
           </p>
 
-          <p className='text-base sm:text-lg text-muted-foreground max-w-3xl mx-auto'>
+          <p className='text-base sm:text-lg text-accent max-w-3xl mx-auto'>
             Our Litigation Center is your trusted resource for comprehensive insights and guidance
             on various litigation matters. Whether you are a legal professional or an individual
             seeking information, our dashboard provides a streamlined and informative experience.
@@ -73,29 +57,10 @@ export default function Litigation() {
               // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
               key={index}
               litigation={litigation}
-              onClick={() => handleOpenModal(litigation)}
             />
           ))}
         </div>
       </div>
-
-      <Dialog open={!!selectedLitigation} onOpenChange={handleCloseModal}>
-        <DialogContent className='max-w-2xl mx-4'>
-          <DialogHeader>
-            <DialogTitle className='text-xl sm:text-2xl font-heading'>
-              {selectedLitigation?.header}
-            </DialogTitle>
-          </DialogHeader>
-          <div className='space-y-3 sm:space-y-4'>
-            {selectedLitigation?.body.map((item, index) => (
-              // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-              <p key={index} className='text-sm sm:text-base text-foreground'>
-                {item}
-              </p>
-            ))}
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   )
 }

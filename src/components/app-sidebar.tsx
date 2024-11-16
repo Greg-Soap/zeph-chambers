@@ -24,17 +24,24 @@ import { toast } from 'sonner'
 const items = [
   {
     title: 'Agreements',
-    icon: <Handshake size={32} className='w-[32px] h-[32px]' />,
+    icon: <Handshake size={32} className='w-[32px] h-[32px] text-white' />,
     url: '/dashboard/agreements',
   },
   {
     title: 'Litigations',
-    icon: <Box2 size={32} variant='Bold' color='black' className='w-[32px] h-[32px]' />,
+    icon: <Box2 size={32} variant='Bold' color='white' className='w-[32px] h-[32px] text-white' />,
     url: '/dashboard/litigations',
   },
   {
     title: 'Incorporation',
-    icon: <UserOctagon size={32} variant='Bold' color='black' className='w-[32px] h-[32px]' />,
+    icon: (
+      <UserOctagon
+        size={32}
+        variant='Bold'
+        color='white'
+        className='w-[32px] h-[32px] text-white'
+      />
+    ),
     url: '/dashboard/incorporation',
   },
 ]
@@ -52,7 +59,7 @@ export function AppSidebar() {
   })
 
   return (
-    <Sidebar>
+    <Sidebar className='bg-[#151921]'>
       <SidebarHeader>
         <SidebarMenu>
           <SidebarMenuItem className='p-4 rounded-[8px] bg-primary'>
@@ -66,8 +73,11 @@ export function AppSidebar() {
             <SidebarMenu>
               {items.map((item) => (
                 <SidebarMenuItem key={item.title} className='py-2'>
-                  <SidebarMenuButton isActive={pathname === item.url} className='py-3 h-full'>
-                    <Link href={item.url} className='flex items-center gap-2 text-xl mb-2 h-full'>
+                  <SidebarMenuButton
+                    onClick={() => router.push(item.url)}
+                    isActive={pathname === item.url}
+                    className='py-3 h-full data-[active=true]:bg-primary hover:bg-primary/80 transition-colors duration-300'>
+                    <Link href={item.url} className='flex items-center gap-2 text-xl h-full'>
                       {item.icon}
                       <span>{item.title}</span>
                     </Link>
