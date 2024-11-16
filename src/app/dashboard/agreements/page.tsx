@@ -1,5 +1,6 @@
 import type { Metadata } from 'next'
 import Agreements from './client'
+import { Suspense } from 'react'
 
 export const metadata: Metadata = {
   title: 'Agreements | Zeph Chambers',
@@ -7,5 +8,9 @@ export const metadata: Metadata = {
 }
 
 export default function AgreementsPage() {
-  return <Agreements />
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <Agreements />
+    </Suspense>
+  )
 }

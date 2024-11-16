@@ -3,7 +3,7 @@ import Client from './client'
 import { Suspense } from 'react'
 
 export const metadata: Metadata = {
-  title: 'Sales Agreement Details',
+  title: 'Deed of Assignment Details',
 }
 
 export default function Page() {
