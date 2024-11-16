@@ -10,6 +10,10 @@ import { FormBase, FormField } from '@/components/customs/custom-form'
 import { CustomInput } from '@/components/customs/custom-input'
 import { salesSchema } from '../../components/schema'
 import type { z } from 'zod'
+import type { SingleSale } from '@/types/agreements'
+import { useMutation } from '@tanstack/react-query'
+import agreementsService from '@/services/agreements.service'
+import PageHeader from '../../components/page-header'
 
 type SalesFormData = z.infer<typeof salesSchema>
 
@@ -27,25 +31,27 @@ export default function Client() {
     },
   })
 
-  async function handleSubmit(data: SalesFormData) {
-    try {
-      // Add your API call here
-      console.log(data)
+  const { mutate: createSale, isPending } = useMutation({
+    mutationFn: (data: SingleSale) => agreementsService.createSaleAgreement(data),
+    onSuccess: () => {
       toast.success('Sales agreement created successfully')
       router.push('/dashboard/agreements?tab=sales')
-    } catch (error) {
+    },
+    onError: () => {
       toast.error('Failed to create sales agreement')
-    }
+    },
+  })
+
+  const handleSubmit = (data: SalesFormData) => {
+    createSale({ ...data, amount: Number(data.amount) })
   }
 
   return (
     <div className='container max-w-4xl py-6'>
-      <div className='mb-6'>
-        <h1 className='text-2xl font-bold tracking-tight'>Create Sales Agreement</h1>
-        <p className='text-muted-foreground'>
-          Fill in the details for the property sales agreement
-        </p>
-      </div>
+      <PageHeader
+        title='Create Sales Agreement'
+        description='Fill in the details for the property sales agreement'
+      />
 
       <FormBase form={form} onSubmit={handleSubmit} className='space-y-6'>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
@@ -84,7 +90,9 @@ export default function Client() {
           <Button type='button' variant='outline' onClick={() => router.back()}>
             Cancel
           </Button>
-          <Button type='submit'>Create Agreement</Button>
+          <Button type='submit' disabled={isPending}>
+            {isPending ? 'Creating...' : 'Create Agreement'}
+          </Button>
         </div>
       </FormBase>
     </div>

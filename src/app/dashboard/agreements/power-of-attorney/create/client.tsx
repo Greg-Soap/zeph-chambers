@@ -10,6 +10,9 @@ import { FormBase, FormField } from '@/components/customs/custom-form'
 import { CustomInput } from '@/components/customs/custom-input'
 import { powerSchema } from '../../components/schema'
 import type { z } from 'zod'
+import PageHeader from '../../components/page-header'
+import agreementsService from '@/services/agreements.service'
+import { useMutation } from '@tanstack/react-query'
 
 type PowerFormData = z.infer<typeof powerSchema>
 
@@ -28,25 +31,27 @@ export default function Client() {
     },
   })
 
-  async function handleSubmit(data: PowerFormData) {
-    try {
-      // Add your API call here
-      console.log(data)
+  const { mutate: createPower, isPending } = useMutation({
+    mutationFn: agreementsService.createPowerOfAttorney,
+    onSuccess: () => {
       toast.success('Power of Attorney created successfully')
       router.push('/dashboard/agreements?tab=power')
-    } catch (error) {
+    },
+    onError: () => {
       toast.error('Failed to create Power of Attorney')
-    }
+    },
+  })
+
+  const handleSubmit = (data: PowerFormData) => {
+    createPower(data)
   }
 
   return (
     <div className='container max-w-4xl py-6'>
-      <div className='mb-6'>
-        <h1 className='text-2xl font-bold tracking-tight'>Create Power of Attorney</h1>
-        <p className='text-muted-foreground'>
-          Fill in the details for the Power of Attorney agreement
-        </p>
-      </div>
+      <PageHeader
+        title='Create Power of Attorney'
+        description='Fill in the details for the Power of Attorney agreement'
+      />
 
       <FormBase form={form} onSubmit={handleSubmit} className='space-y-6'>
         <div className='space-y-6'>
@@ -115,7 +120,9 @@ export default function Client() {
           <Button type='button' variant='outline' onClick={() => router.back()}>
             Cancel
           </Button>
-          <Button type='submit'>Create Power of Attorney</Button>
+          <Button type='submit' disabled={isPending}>
+            {isPending ? 'Creating...' : 'Create Power of Attorney'}
+          </Button>
         </div>
       </FormBase>
     </div>

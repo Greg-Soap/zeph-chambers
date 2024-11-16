@@ -1,6 +1,6 @@
 import type { Column } from '@/components/customs/custom-table'
 import type { SingleDeed } from '@/types/agreements'
-import { Edit2, Eye, Trash } from 'lucide-react'
+import getTableActions from './get-table-actions'
 
 interface DeedColumnsProps {
   onEdit: (deed: SingleDeed) => void
@@ -51,28 +51,9 @@ export function getDeedColumns({
     },
     {
       key: 'id',
-      title: 'Actions',
+      title: '',
       width: 'w-[100px]',
-      actions: (deed: SingleDeed) => [
-        {
-          label: 'Edit',
-          icon: <Edit2 className='h-4 w-4 sm:mr-2' />,
-          onClick: () => onEdit?.(deed),
-          showLabelOnMobile: false,
-        },
-        {
-          label: 'View',
-          icon: <Eye className='h-4 w-4 sm:mr-2' />,
-          onClick: () => onView?.(deed),
-          showLabelOnMobile: false,
-        },
-        {
-          label: 'Delete',
-          icon: <Trash className='h-4 w-4 sm:mr-2 text-red-500' />,
-          onClick: () => onDelete?.(deed),
-          showLabelOnMobile: false,
-        },
-      ],
+      actions: (deed: SingleDeed) => getTableActions({ onEdit, onView, onDelete }, deed),
     },
   ]
 }

@@ -15,18 +15,13 @@ import { ArrowUpDown } from 'lucide-react'
 export interface Column<T> {
   key: keyof T
   title: string
-  width: string
+  width?: string
   sortable?: boolean
   align?: 'center'
   hideOnMobile?: boolean
   hideOnTablet?: boolean
-  render?: (value?: any) => React.ReactNode
-  actions?: (record: T) => Array<{
-    label: string
-    icon: React.ReactNode
-    onClick: () => void
-    showLabelOnMobile?: boolean
-  }>
+  render?: (value: any) => React.ReactNode
+  actions?: (item: T) => { menu: React.ReactNode }
 }
 
 interface CustomTableProps<T> {
@@ -133,22 +128,7 @@ function CustomTable<T>({
                       ${column.hideOnTablet ? 'hidden md:table-cell' : ''}
                     `}>
                     {column.actions ? (
-                      <div className='flex justify-end'>
-                        {column.actions(item).map((action, actionIndex) => (
-                          <Button
-                            // biome-ignore lint/suspicious/noArrayIndexKey: <explanation>
-                            key={actionIndex}
-                            variant='ghost'
-                            size='sm'
-                            onClick={action.onClick}
-                            className='h-8 px-2'>
-                            {action.icon}
-                            {action.showLabelOnMobile !== false && (
-                              <span className='hidden sm:inline-block ml-2'>{action.label}</span>
-                            )}
-                          </Button>
-                        ))}
-                      </div>
+                      <div className='flex justify-end'>{column.actions(item).menu}</div>
                     ) : column.render ? (
                       column.render(item[column.key])
                     ) : (

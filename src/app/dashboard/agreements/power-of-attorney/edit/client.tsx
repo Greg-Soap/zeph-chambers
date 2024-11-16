@@ -13,6 +13,8 @@ import { CustomInput } from '@/components/customs/custom-input'
 import { powerSchema } from '../../components/schema'
 import agreementsService from '@/services/agreements.service'
 import type { z } from 'zod'
+import MiniLoader from '@/components/mini-loader'
+import PageHeader from '../../components/page-header'
 
 type PowerFormData = z.infer<typeof powerSchema>
 
@@ -87,15 +89,19 @@ export default function Client() {
   }
 
   if (isLoading) {
-    return <div>Loading...</div> // Consider using a proper loading component
+    return (
+      <div className='flex justify-center items-center h-screen w-full'>
+        <MiniLoader />
+      </div>
+    )
   }
 
   return (
     <div className='container max-w-4xl py-6'>
-      <div className='mb-6'>
-        <h1 className='text-2xl font-bold tracking-tight'>Edit Power of Attorney</h1>
-        <p className='text-muted-foreground'>Update the details of the Power of Attorney</p>
-      </div>
+      <PageHeader
+        title='Edit Power of Attorney'
+        description='Update the details of the Power of Attorney'
+      />
 
       <FormBase form={form} onSubmit={handleSubmit} className='space-y-6'>
         <div className='space-y-6'>

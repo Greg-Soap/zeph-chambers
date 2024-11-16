@@ -13,6 +13,8 @@ import { CustomInput } from '@/components/customs/custom-input'
 import { salesSchema } from '../../components/schema'
 import agreementsService from '@/services/agreements.service'
 import type { z } from 'zod'
+import MiniLoader from '@/components/mini-loader'
+import PageHeader from '../../components/page-header'
 
 type SalesFormData = z.infer<typeof salesSchema>
 
@@ -85,15 +87,19 @@ export default function Client() {
   }
 
   if (isLoading) {
-    return <div>Loading...</div> // Consider using a proper loading component
+    return (
+      <div className='flex justify-center items-center h-screen w-full'>
+        <MiniLoader />
+      </div>
+    )
   }
 
   return (
     <div className='container max-w-4xl py-6'>
-      <div className='mb-6'>
-        <h1 className='text-2xl font-bold tracking-tight'>Edit Sale Agreement</h1>
-        <p className='text-muted-foreground'>Update the details of the sale agreement</p>
-      </div>
+      <PageHeader
+        title='Edit Sale Agreement'
+        description='Update the details of the sale agreement'
+      />
 
       <FormBase form={form} onSubmit={handleSubmit} className='space-y-6'>
         <div className='space-y-6'>

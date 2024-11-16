@@ -9,13 +9,6 @@ import { getPowerColumns } from './power-columns'
 import { getLoanColumns } from './loan-columns'
 import { getLeaseColumns } from './lease-columns'
 
-const statusColors = {
-  draft: 'bg-gray-100 text-gray-800',
-  pending: 'bg-yellow-100 text-yellow-800',
-  active: 'bg-green-100 text-green-800',
-  expired: 'bg-red-100 text-red-800',
-} as const
-
 interface AgreementTableProps {
   type: string
   data: any[]

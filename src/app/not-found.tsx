@@ -16,7 +16,7 @@ export default function NotFound() {
         </BoxReveal>
 
         <BoxReveal boxColor={colors.primary.DEFAULT} duration={1.5}>
-          <p className='text-lg text-muted max-w-md mx-auto text-start'>
+          <p className='text-lg text-white/75 max-w-md mx-auto text-start'>
             The page you're looking for doesn't exist or has been moved. Please check the URL or
             return to the homepage.
           </p>

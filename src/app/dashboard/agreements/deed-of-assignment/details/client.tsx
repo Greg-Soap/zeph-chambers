@@ -8,6 +8,8 @@ import { Pencil, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import CustomDialog from '@/components/customs/custom-dialog'
 import agreementsService from '@/services/agreements.service'
+import MiniLoader from '@/components/mini-loader'
+import PageHeader from '../../components/page-header'
 
 export default function Client() {
   const router = useRouter()
@@ -38,7 +40,11 @@ export default function Client() {
   })
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return (
+      <div className='flex justify-center items-center h-screen w-full'>
+        <MiniLoader />
+      </div>
+    )
   }
 
   if (!deed?.data) {
@@ -57,10 +63,10 @@ export default function Client() {
   return (
     <div className='container max-w-3xl py-6'>
       <div className='flex items-center justify-between mb-6'>
-        <div>
-          <h1 className='text-2xl font-bold tracking-tight'>Deed of Assignment Details</h1>
-          <p className='text-muted-foreground'>View and manage deed of assignment information</p>
-        </div>
+        <PageHeader
+          title='Deed of Assignment Details'
+          description='View and manage deed of assignment information'
+        />
         <div className='flex gap-3'>
           <Button variant='outline' size='icon' onClick={handleEdit} disabled={isDeleting}>
             <Pencil className='h-4 w-4' />

@@ -13,6 +13,8 @@ import { CustomInput } from '@/components/customs/custom-input'
 import { tenancySchema } from '../../components/schema'
 import agreementsService from '@/services/agreements.service'
 import type { z } from 'zod'
+import MiniLoader from '@/components/mini-loader'
+import PageHeader from '../../components/page-header'
 
 type TenancyFormData = z.infer<typeof tenancySchema>
 
@@ -30,7 +32,7 @@ export default function Client() {
       tenantAddress: '',
       propertyDescription: '',
       duration: '',
-      amount: 0,
+      amount: '',
       files: [],
     },
   })
@@ -68,7 +70,7 @@ export default function Client() {
         tenantAddress: tenancy.data.tenantAddress,
         propertyDescription: tenancy.data.propertyDescription,
         duration: tenancy.data.duration,
-        amount: tenancy.data.amount,
+        amount: tenancy.data.amount.toString(),
         files: [], // Add existing files if any
       })
     }
@@ -81,6 +83,7 @@ export default function Client() {
     updateTenancy({
       ...data,
       id: tenancyId,
+      amount: Number(data.amount),
     })
   }
 
@@ -91,15 +94,19 @@ export default function Client() {
   }
 
   if (isLoading) {
-    return <div>Loading...</div> // Consider using a proper loading component
+    return (
+      <div className='flex justify-center items-center h-screen w-full'>
+        <MiniLoader />
+      </div>
+    )
   }
 
   return (
     <div className='container max-w-4xl py-6'>
-      <div className='mb-6'>
-        <h1 className='text-2xl font-bold tracking-tight'>Edit Tenancy Agreement</h1>
-        <p className='text-muted-foreground'>Update the details of the tenancy agreement</p>
-      </div>
+      <PageHeader
+        title='Edit Tenancy Agreement'
+        description='Update the details of the tenancy agreement'
+      />
 
       <FormBase form={form} onSubmit={handleSubmit} className='space-y-6'>
         <div className='space-y-6'>

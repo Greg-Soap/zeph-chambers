@@ -1,6 +1,6 @@
 import type { Column } from '@/components/customs/custom-table'
 import type { SinglePower } from '@/types/agreements'
-import { Edit2, Eye, Trash } from 'lucide-react'
+import getTableActions from './get-table-actions'
 
 interface PowerColumnsProps {
   onEdit: (power: SinglePower) => void
@@ -38,28 +38,9 @@ export function getPowerColumns({
     },
     {
       key: 'id',
-      title: 'Actions',
-      width: 'w-[100px]',
-      actions: (power: SinglePower) => [
-        {
-          label: 'Edit',
-          icon: <Edit2 className='h-4 w-4 sm:mr-2' />,
-          onClick: () => onEdit?.(power),
-          showLabelOnMobile: false,
-        },
-        {
-          label: 'View',
-          icon: <Eye className='h-4 w-4 sm:mr-2' />,
-          onClick: () => onView?.(power),
-          showLabelOnMobile: false,
-        },
-        {
-          label: 'Delete',
-          icon: <Trash className='h-4 w-4 sm:mr-2 text-red-500' />,
-          onClick: () => onDelete?.(power),
-          showLabelOnMobile: false,
-        },
-      ],
+      title: '',
+      width: 'w-[30px]',
+      actions: (power: SinglePower) => getTableActions({ onEdit, onView, onDelete }, power),
     },
   ]
 }

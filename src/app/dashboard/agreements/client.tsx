@@ -10,6 +10,8 @@ import { useIsMobile } from '@/hooks/use-breakpoints'
 import { useRouter } from 'next/navigation'
 import { startCase, toDashCase } from '@/lib/helper-func'
 import type { ModelObject } from '@/lib/cookies'
+import agreementsService from '@/services/agreements.service'
+import { useQuery } from '@tanstack/react-query'
 
 export const AGREEMENT_TYPES = {
   TENANCY: 'tenancy',
@@ -30,8 +32,30 @@ function AgreementTableContainer({ type }: AgreementTableContainerProps) {
   const router = useRouter()
   const isMobile = useIsMobile()
 
+  const { data: agreements, isLoading: isFetching } = useQuery({
+    queryKey: ['agreements', type],
+    queryFn: async () => {
+      switch (type) {
+        case AGREEMENT_TYPES.TENANCY:
+          return agreementsService.getAllTenancyAgreements()
+        case AGREEMENT_TYPES.SALES:
+          return agreementsService.getAllSaleAgreements()
+        case AGREEMENT_TYPES.DEED:
+          return agreementsService.getAllDeedOfAssignments()
+        case AGREEMENT_TYPES.POWER:
+          return agreementsService.getAllPowerOfAttorneys()
+        case AGREEMENT_TYPES.LOAN:
+          return agreementsService.getAllLoanAgreements()
+        case AGREEMENT_TYPES.LEASE:
+          return agreementsService.getAllLeaseAgreements()
+        default:
+          throw new Error(`Unknown agreement type: ${type}`)
+      }
+    },
+  })
+
   const handleEdit = (agreement: ModelObject) => {
-    router.push(`/dashboard/agreements/${type}/${agreement.id}/edit`)
+    router.push(`/dashboard/agreements/${toDashCase(type)}/edit?id=${agreement.id}`)
   }
 
   const handleDelete = (agreement: ModelObject) => {
@@ -39,7 +63,7 @@ function AgreementTableContainer({ type }: AgreementTableContainerProps) {
   }
 
   const handleView = (agreement: ModelObject) => {
-    router.push(`/dashboard/agreements/${toDashCase(type)}?id=${agreement.id}`)
+    router.push(`/dashboard/agreements/${toDashCase(type)}/details?id=${agreement.id}`)
   }
 
   return (
@@ -54,7 +78,8 @@ function AgreementTableContainer({ type }: AgreementTableContainerProps) {
 
       <AgreementTable
         type={type}
-        data={[]}
+        data={agreements?.data ?? []}
+        isLoading={isFetching}
         onEdit={handleEdit}
         onDelete={handleDelete}
         onView={handleView}

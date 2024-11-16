@@ -1,6 +1,8 @@
 import type { Column } from '@/components/customs/custom-table'
+import CustomTooltip from '@/components/customs/custom-tooltip'
 import type { SingleLoan } from '@/types/agreements'
 import { Edit2, Eye, Trash } from 'lucide-react'
+import getTableActions from './get-table-actions'
 
 interface LoanColumnsProps {
   onEdit: (loan: SingleLoan) => void
@@ -51,28 +53,9 @@ export function getLoanColumns({
     },
     {
       key: 'id',
-      title: 'Actions',
-      width: 'w-[100px]',
-      actions: (loan: SingleLoan) => [
-        {
-          label: 'Edit',
-          icon: <Edit2 className='h-4 w-4 sm:mr-2' />,
-          onClick: () => onEdit?.(loan),
-          showLabelOnMobile: false,
-        },
-        {
-          label: 'View',
-          icon: <Eye className='h-4 w-4 sm:mr-2' />,
-          onClick: () => onView?.(loan),
-          showLabelOnMobile: false,
-        },
-        {
-          label: 'Delete',
-          icon: <Trash className='h-4 w-4 sm:mr-2 text-red-500' />,
-          onClick: () => onDelete?.(loan),
-          showLabelOnMobile: false,
-        },
-      ],
+      title: '',
+      width: 'w-[30px]',
+      actions: (loan: SingleLoan) => getTableActions({ onEdit, onView, onDelete }, loan),
     },
   ]
 }

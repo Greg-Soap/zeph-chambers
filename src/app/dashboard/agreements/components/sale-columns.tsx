@@ -1,6 +1,6 @@
 import type { Column } from '@/components/customs/custom-table'
 import type { SingleSale } from '@/types/agreements'
-import { Edit2, Eye, Trash } from 'lucide-react'
+import getTableActions from './get-table-actions'
 
 interface SaleColumnsProps {
   onEdit: (sale: SingleSale) => void
@@ -44,28 +44,9 @@ export function getSaleColumns({
     },
     {
       key: 'id',
-      title: 'Actions',
-      width: 'w-[100px]',
-      actions: (sale: SingleSale) => [
-        {
-          label: 'Edit',
-          icon: <Edit2 className='h-4 w-4 sm:mr-2' />,
-          onClick: () => onEdit?.(sale),
-          showLabelOnMobile: false,
-        },
-        {
-          label: 'View',
-          icon: <Eye className='h-4 w-4 sm:mr-2' />,
-          onClick: () => onView?.(sale),
-          showLabelOnMobile: false,
-        },
-        {
-          label: 'Delete',
-          icon: <Trash className='h-4 w-4 sm:mr-2 text-red-500' />,
-          onClick: () => onDelete?.(sale),
-          showLabelOnMobile: false,
-        },
-      ],
+      title: '',
+      width: 'w-[30px]',
+      actions: (sale: SingleSale) => getTableActions({ onEdit, onView, onDelete }, sale),
     },
   ]
 }

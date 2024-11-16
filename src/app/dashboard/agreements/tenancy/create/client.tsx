@@ -13,6 +13,7 @@ import type { z } from 'zod'
 import { useMutation } from '@tanstack/react-query'
 import agreementsService from '@/services/agreements.service'
 import type { SingleTenancy } from '@/types/agreements'
+import PageHeader from '../../components/page-header'
 
 type TenancyFormData = z.infer<typeof tenancySchema>
 
@@ -48,14 +49,12 @@ export default function Client() {
     createTenancy({ ...data, amount: Number(data.amount) })
   }
 
-  console.log({ errors: form.formState.errors, data: form.getValues() })
-
   return (
     <div className='container max-w-4xl py-6'>
-      <div className='mb-6'>
-        <h1 className='text-2xl font-bold tracking-tight'>Create Tenancy Agreement</h1>
-        <p className='text-muted-foreground'>Fill in the details for the tenancy agreement</p>
-      </div>
+      <PageHeader
+        title='Create Tenancy Agreement'
+        description='Fill in the details for the tenancy agreement'
+      />
 
       <FormBase form={form} onSubmit={handleSubmit} className='space-y-6'>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>

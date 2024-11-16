@@ -1,6 +1,13 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import Provider from './client-provider'
 import './index.css'
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
+}
 
 export const metadata: Metadata = {
   title: {
@@ -21,11 +28,7 @@ export const metadata: Metadata = {
     icon: [{ url: '/favicon.ico' }, { url: '/icon.png', type: 'image/png' }],
     apple: [{ url: '/apple-icon.png', type: 'image/png' }],
   },
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 1,
-  },
+
   robots: {
     index: true,
     follow: true,

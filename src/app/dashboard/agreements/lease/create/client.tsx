@@ -10,6 +10,7 @@ import { FormBase, FormField } from '@/components/customs/custom-form'
 import { CustomInput } from '@/components/customs/custom-input'
 import { leaseSchema } from '../../components/schema'
 import type { z } from 'zod'
+import PageHeader from '../../components/page-header'
 
 type LeaseFormData = z.infer<typeof leaseSchema>
 
@@ -43,10 +44,10 @@ export default function Client() {
 
   return (
     <div className='container max-w-4xl py-6'>
-      <div className='mb-6'>
-        <h1 className='text-2xl font-bold tracking-tight'>Create Lease Agreement</h1>
-        <p className='text-muted-foreground'>Fill in the details for the lease agreement</p>
-      </div>
+      <PageHeader
+        title='Create Lease Agreement'
+        description='Fill in the details for the lease agreement'
+      />
 
       <FormBase form={form} onSubmit={handleSubmit} className='space-y-6'>
         <div className='space-y-6'>

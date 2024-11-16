@@ -14,6 +14,7 @@ import { deedSchema } from '../../components/schema'
 import agreementsService from '@/services/agreements.service'
 import type { z } from 'zod'
 import MiniLoader from '@/components/mini-loader'
+import PageHeader from '../../components/page-header'
 
 type DeedFormData = z.infer<typeof deedSchema>
 
@@ -101,10 +102,10 @@ export default function Client() {
 
   return (
     <div className='container max-w-4xl py-6'>
-      <div className='mb-6'>
-        <h1 className='text-2xl font-bold tracking-tight'>Edit Deed of Assignment</h1>
-        <p className='text-muted-foreground'>Update the details of the Deed of Assignment</p>
-      </div>
+      <PageHeader
+        title='Edit Deed of Assignment'
+        description='Update the details of the Deed of Assignment'
+      />
 
       <FormBase form={form} onSubmit={handleSubmit} className='space-y-6'>
         <div className='space-y-6'>

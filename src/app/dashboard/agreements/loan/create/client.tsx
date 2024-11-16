@@ -10,6 +10,9 @@ import { FormBase, FormField } from '@/components/customs/custom-form'
 import { CustomInput } from '@/components/customs/custom-input'
 import { loanSchema } from '../../components/schema'
 import type { z } from 'zod'
+import agreementsService from '@/services/agreements.service'
+import { useMutation } from '@tanstack/react-query'
+import PageHeader from '../../components/page-header'
 
 type LoanFormData = z.infer<typeof loanSchema>
 
@@ -28,23 +31,27 @@ export default function Client() {
     },
   })
 
-  async function handleSubmit(data: LoanFormData) {
-    try {
-      // Add your API call here
-      console.log(data)
+  const { mutate: createLoan, isPending } = useMutation({
+    mutationFn: agreementsService.createLoanAgreement,
+    onSuccess: () => {
       toast.success('Loan agreement created successfully')
       router.push('/dashboard/agreements?tab=loan')
-    } catch (error) {
+    },
+    onError: () => {
       toast.error('Failed to create loan agreement')
-    }
+    },
+  })
+
+  const handleSubmit = (data: LoanFormData) => {
+    createLoan(data)
   }
 
   return (
     <div className='container max-w-4xl py-6'>
-      <div className='mb-6'>
-        <h1 className='text-2xl font-bold tracking-tight'>Create Loan Agreement</h1>
-        <p className='text-muted-foreground'>Fill in the details for the loan agreement</p>
-      </div>
+      <PageHeader
+        title='Create Loan Agreement'
+        description='Fill in the details for the loan agreement'
+      />
 
       <FormBase form={form} onSubmit={handleSubmit} className='space-y-6'>
         <div className='space-y-6'>
@@ -137,7 +144,9 @@ export default function Client() {
           <Button type='button' variant='outline' onClick={() => router.back()}>
             Cancel
           </Button>
-          <Button type='submit'>Create Loan Agreement</Button>
+          <Button type='submit' disabled={isPending}>
+            {isPending ? 'Creating...' : 'Create Loan Agreement'}
+          </Button>
         </div>
       </FormBase>
     </div>

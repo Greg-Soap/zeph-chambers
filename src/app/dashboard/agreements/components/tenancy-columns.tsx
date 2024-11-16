@@ -1,6 +1,6 @@
 import type { Column } from '@/components/customs/custom-table'
 import type { SingleTenancy } from '@/types/agreements'
-import { Edit2, Eye, Trash } from 'lucide-react'
+import getTableActions from './get-table-actions'
 
 interface TenancyColumnsProps {
   onEdit: (tenancy: SingleTenancy) => void
@@ -25,54 +25,35 @@ export function getTenancyColumns({
       key: 'tenantName',
       title: 'Tenant',
       sortable: true,
-      width: 'w-[200px]',
-      hideOnMobile: true,
+      width: 'w-[200px] min-w-[150px]',
+      // hideOnMobile: true,
       render: (value?: string) => <div className='line-clamp-2'>{value || 'Not specified'}</div>,
     },
     {
       key: 'propertyDescription',
       title: 'Property',
-      width: 'w-[250px]',
-      hideOnMobile: true,
+      width: 'w-[250px] min-w-[150px]',
+      // hideOnMobile: true,
       render: (value?: string) => <div className='line-clamp-2'>{value || 'Not specified'}</div>,
     },
     {
       key: 'amount',
       title: 'Amount',
-      width: 'w-[120px]',
-      render: (value?: number) => (value ? `$${value.toLocaleString()}` : 'Not specified'),
+      width: 'w-[120px] min-w-[100px]',
+      render: (value?: number) => (value ? `₦${value.toLocaleString()}` : 'Not specified'),
     },
     {
       key: 'duration',
       title: 'Duration',
-      width: 'w-[120px]',
-      hideOnTablet: true,
+      width: 'w-[120px] min-w-[100px]',
+      // hideOnTablet: true,
       render: (value?: string) => value || 'Not specified',
     },
     {
       key: 'id',
-      title: 'Actions',
-      width: 'w-[100px]',
-      actions: (tenancy: SingleTenancy) => [
-        {
-          label: 'Edit',
-          icon: <Edit2 className='h-4 w-4 sm:mr-2' />,
-          onClick: () => onEdit?.(tenancy),
-          showLabelOnMobile: false,
-        },
-        {
-          label: 'View',
-          icon: <Eye className='h-4 w-4 sm:mr-2' />,
-          onClick: () => onView?.(tenancy),
-          showLabelOnMobile: false,
-        },
-        {
-          label: 'Delete',
-          icon: <Trash className='h-4 w-4 sm:mr-2 text-red-500' />,
-          onClick: () => onDelete?.(tenancy),
-          showLabelOnMobile: false,
-        },
-      ],
+      title: '',
+      width: 'w-[30px]',
+      actions: (tenancy: SingleTenancy) => getTableActions({ onEdit, onView, onDelete }, tenancy),
     },
   ]
 }
