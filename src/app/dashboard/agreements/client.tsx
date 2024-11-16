@@ -1,99 +1,63 @@
 'use client'
 
-import { useState } from 'react'
 import { Plus } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { useTabUrlSync } from '@/hooks/use-tab'
-import CustomModal from '@/components/customs/custom-modal'
-import { AgreementForm } from './components/agreement-form'
 import { AgreementTable } from './components/agreement-table'
 import { toast } from 'sonner'
 import { useIsMobile } from '@/hooks/use-breakpoints'
+import { useRouter } from 'next/navigation'
+import { startCase, toDashCase } from '@/lib/helper-func'
+import type { ModelObject } from '@/lib/cookies'
 
-const AGREEMENT_TYPES = {
+export const AGREEMENT_TYPES = {
   TENANCY: 'tenancy',
   SALES: 'sales',
-  DEED: 'deed',
-  POWER: 'power',
+  DEED: 'deed of assignment',
+  POWER: 'power of attorney',
   LOAN: 'loan',
   LEASE: 'lease',
 } as const
 
 type AgreementType = (typeof AGREEMENT_TYPES)[keyof typeof AGREEMENT_TYPES]
 
-// Add this interface above mockAgreements
-interface Agreement {
-  id: string
-  title?: string
-  description?: string
-  parties?: string
-  status?: 'active' | 'draft' | 'pending' | 'expired'
-  createdAt?: string
-  updatedAt?: string
-}
-
-// Update the type annotation for mockAgreements
-const mockAgreements: Agreement[] = [
-  {
-    id: '1',
-    title: 'Sample Agreement',
-    description: 'This is a sample agreement',
-    parties: 'John Doe, Jane Smith',
-    status: 'active',
-    createdAt: '2024-03-20T10:00:00Z',
-    updatedAt: '2024-03-20T10:00:00Z',
-  },
-  {
-    id: '2',
-    title: 'Draft Agreement',
-    description: 'This is a draft agreement',
-    parties: 'Alice Johnson, Bob Wilson',
-    status: 'draft',
-    createdAt: '2024-03-19T15:30:00Z',
-    updatedAt: '2024-03-19T16:45:00Z',
-  },
-]
-
 interface AgreementTableContainerProps {
   type: AgreementType
 }
 
 function AgreementTableContainer({ type }: AgreementTableContainerProps) {
-  const [isModalOpen, setIsModalOpen] = useState(false)
+  const router = useRouter()
   const isMobile = useIsMobile()
 
-  const handleEdit = (agreement: Agreement) => {
-    toast.info(`Editing agreement: ${agreement.title}`)
+  const handleEdit = (agreement: ModelObject) => {
+    router.push(`/dashboard/agreements/${type}/${agreement.id}/edit`)
   }
 
-  const handleDelete = (agreement: Agreement) => {
+  const handleDelete = (agreement: ModelObject) => {
     toast.error(`Deleting agreement: ${agreement.title}`)
+  }
+
+  const handleView = (agreement: ModelObject) => {
+    router.push(`/dashboard/agreements/${toDashCase(type)}?id=${agreement.id}`)
   }
 
   return (
     <div className='space-y-4'>
       <div className='flex justify-between items-center'>
-        <h2 className='text-lg md:text-2xl font-bold capitalize'>{type} Agreements</h2>
-        <Button onClick={() => setIsModalOpen(true)}>
+        <h2 className='text-lg md:text-2xl font-bold capitalize'>{startCase(type)} Agreements</h2>
+        <Button onClick={() => router.push(`/dashboard/agreements/${toDashCase(type)}/create`)}>
           <Plus className='mr-0 md:mr-2 h-4 w-4' />
           {isMobile ? '' : `Add ${type}`}
         </Button>
       </div>
 
-      <CustomModal
-        open={isModalOpen}
-        onOpenChange={setIsModalOpen}
-        title={`Create ${type} Agreement`}
-        size='lg'>
-        <AgreementForm type={type} onSuccess={() => setIsModalOpen(false)} />
-      </CustomModal>
-
       <AgreementTable
         type={type}
-        data={mockAgreements}
+        data={[]}
         onEdit={handleEdit}
         onDelete={handleDelete}
+        onView={handleView}
       />
     </div>
   )
@@ -105,7 +69,7 @@ export default function AgreementsClient() {
   return (
     <div className='container space-y-6 p-4 md:p-6 lg:p-8'>
       <div className='flex flex-col gap-4'>
-        <h1 className='text-3xl font-bold tracking-tight'>Agreements</h1>
+        <h1 className='text-xl md:text-3xl font-bold tracking-tight'>Agreements</h1>
         <p className='text-muted-foreground'>
           Manage and track all your legal agreements in one place.
         </p>

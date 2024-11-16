@@ -83,6 +83,21 @@ export function capitalizeFirstLetter(str: string): string {
   return firstLetter + restOfString
 }
 
+export function toDashCase(str: string): string {
+  return (
+    str
+      .toLowerCase()
+      // Replace spaces and underscores with dashes
+      .replace(/[\s_]+/g, '-')
+      // Remove any non-alphanumeric characters (except dashes)
+      .replace(/[^a-z0-9-]/g, '')
+      // Remove multiple consecutive dashes
+      .replace(/-+/g, '-')
+      // Remove leading/trailing dashes
+      .replace(/^-+|-+$/g, '')
+  )
+}
+
 // snake_case, kebab-case, camelCase, PascalCase, chunk, debounce, range
 
 export function getGreeting(): string {

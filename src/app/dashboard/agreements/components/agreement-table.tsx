@@ -1,19 +1,13 @@
 'use client'
 
-import { formatDistanceToNow } from 'date-fns'
-import { Edit2, Trash } from 'lucide-react'
 import CustomTable, { type Column } from '@/components/customs/custom-table'
-import { Badge } from '@/components/ui/badge'
-
-interface Agreement {
-  id: string
-  title?: string
-  description?: string
-  parties?: string
-  status?: 'draft' | 'pending' | 'active' | 'expired'
-  createdAt?: string
-  updatedAt?: string
-}
+import { AGREEMENT_TYPES } from '../client'
+import { getTenancyColumns } from './tenancy-columns'
+import { getSaleColumns } from './sale-columns'
+import { getDeedColumns } from './deed-columns'
+import { getPowerColumns } from './power-columns'
+import { getLoanColumns } from './loan-columns'
+import { getLeaseColumns } from './lease-columns'
 
 const statusColors = {
   draft: 'bg-gray-100 text-gray-800',
@@ -24,10 +18,11 @@ const statusColors = {
 
 interface AgreementTableProps {
   type: string
-  data?: Agreement[]
+  data: any[]
   isLoading?: boolean
-  onEdit?: (agreement: Agreement) => void
-  onDelete?: (agreement: Agreement) => void
+  onEdit: (agreement: any) => void
+  onDelete: (agreement: any) => void
+  onView: (agreement: any) => void
 }
 
 export function AgreementTable({
@@ -36,74 +31,33 @@ export function AgreementTable({
   isLoading = false,
   onEdit,
   onDelete,
+  onView,
 }: AgreementTableProps) {
-  const columns: Column<Agreement>[] = [
-    {
-      key: 'title',
-      title: 'Title',
-      sortable: true,
-      width: 'w-[250px] min-w-[200px]',
-      render: (value?: string) => <div className='line-clamp-2'>{value || 'Untitled'}</div>,
-    },
-    {
-      key: 'parties',
-      title: 'Parties',
-      sortable: true,
-      width: 'w-[200px]',
-      hideOnMobile: true,
-      render: (value?: string) => (
-        <div className='line-clamp-2'>{value || 'No parties specified'}</div>
-      ),
-    },
-    {
-      key: 'status',
-      title: 'Status',
-      width: 'w-[120px]',
-      align: 'center',
-      render: (value?: Agreement['status']) => (
-        <Badge
-          variant='secondary'
-          className={`${value ? statusColors[value] : 'bg-gray-100 text-gray-800'} whitespace-nowrap`}>
-          {value ? value.charAt(0).toUpperCase() + value.slice(1) : 'Draft'}
-        </Badge>
-      ),
-    },
-    {
-      key: 'createdAt',
-      title: 'Created',
-      width: 'w-[150px]',
-      hideOnMobile: true,
-      render: (value?: string) =>
-        value ? formatDistanceToNow(new Date(value), { addSuffix: true }) : 'Not available',
-    },
-    {
-      key: 'updatedAt',
-      title: 'Last Updated',
-      width: 'w-[150px]',
-      hideOnTablet: true,
-      render: (value?: string) =>
-        value ? formatDistanceToNow(new Date(value), { addSuffix: true }) : 'Not available',
-    },
-    {
-      key: 'id',
-      title: 'Actions',
-      width: 'w-[100px]',
-      actions: (agreement: Agreement) => [
-        {
-          label: 'Edit',
-          icon: <Edit2 className='h-4 w-4 sm:mr-2' />,
-          onClick: () => onEdit?.(agreement),
-          showLabelOnMobile: false,
-        },
-        {
-          label: 'Delete',
-          icon: <Trash className='h-4 w-4 sm:mr-2' />,
-          onClick: () => onDelete?.(agreement),
-          showLabelOnMobile: false,
-        },
-      ],
-    },
-  ]
+  let columns: Column<any>[] = []
+
+  switch (type) {
+    case AGREEMENT_TYPES.TENANCY:
+      columns = getTenancyColumns({ onEdit, onDelete, onView })
+      break
+    case AGREEMENT_TYPES.SALES:
+      columns = getSaleColumns({ onEdit, onDelete, onView })
+      break
+    case AGREEMENT_TYPES.DEED:
+      columns = getDeedColumns({ onEdit, onDelete, onView })
+      break
+    case AGREEMENT_TYPES.POWER:
+      columns = getPowerColumns({ onEdit, onDelete, onView })
+      break
+    case AGREEMENT_TYPES.LOAN:
+      columns = getLoanColumns({ onEdit, onDelete, onView })
+      break
+    case AGREEMENT_TYPES.LEASE:
+      columns = getLeaseColumns({ onEdit, onDelete, onView })
+      break
+    default:
+      console.warn(`Unknown agreement type: ${type}`)
+      columns = []
+  }
 
   return (
     <div className='w-full overflow-x-auto'>
