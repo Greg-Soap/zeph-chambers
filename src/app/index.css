@@ -88,3 +88,16 @@
     @apply bg-background text-foreground;
   }
 }
+
+.tabs-scrollbar::-webkit-scrollbar {
+  height: 2px;
+}
+
+.tabs-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.tabs-scrollbar::-webkit-scrollbar-thumb {
+  background: hsl(var(--muted));
+  border-radius: 999px;
+}
