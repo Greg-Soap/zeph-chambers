@@ -10,6 +10,9 @@ import { FormBase, FormField } from '@/components/customs/custom-form'
 import { CustomInput } from '@/components/customs/custom-input'
 import { tenancySchema } from '../../components/schema'
 import type { z } from 'zod'
+import { useMutation } from '@tanstack/react-query'
+import agreementsService from '@/services/agreements.service'
+import type { SingleTenancy } from '@/types/agreements'
 
 type TenancyFormData = z.infer<typeof tenancySchema>
 
@@ -23,23 +26,29 @@ export default function Client() {
       landlordAddress: '',
       tenantName: '',
       tenantAddress: '',
-      amount: 0,
+      amount: '',
       propertyDescription: '',
       duration: '',
       files: [],
     },
   })
 
-  async function handleSubmit(data: TenancyFormData) {
-    try {
-      // Add your API call here
-      console.log(data)
+  const { mutate: createTenancy, isPending } = useMutation({
+    mutationFn: (data: SingleTenancy) => agreementsService.createTenancyAgreement(data),
+    onSuccess: () => {
       toast.success('Tenancy agreement created successfully')
       router.push('/dashboard/agreements?tab=tenancy')
-    } catch (error) {
+    },
+    onError: () => {
       toast.error('Failed to create tenancy agreement')
-    }
+    },
+  })
+
+  const handleSubmit = (data: TenancyFormData) => {
+    createTenancy({ ...data, amount: Number(data.amount) })
   }
+
+  console.log({ errors: form.formState.errors, data: form.getValues() })
 
   return (
     <div className='container max-w-4xl py-6'>
@@ -66,8 +75,8 @@ export default function Client() {
             <CustomInput variant='input' placeholder="Enter tenant's address" />
           </FormField>
 
-          <FormField form={form} name='amount' label='Rent Amount' showMessage>
-            <CustomInput variant='input' type='number' placeholder='Enter rent amount' />
+          <FormField form={form} name='amount' label='Rent Amount (₦)' showMessage>
+            <CustomInput variant='number' placeholder='Enter rent amount' />
           </FormField>
 
           <FormField form={form} name='duration' label='Duration' showMessage>
@@ -87,7 +96,9 @@ export default function Client() {
           <Button type='button' variant='outline' onClick={() => router.back()}>
             Cancel
           </Button>
-          <Button type='submit'>Create Agreement</Button>
+          <Button type='submit' disabled={isPending}>
+            {isPending ? 'Creating...' : 'Create Agreement'}
+          </Button>
         </div>
       </FormBase>
     </div>

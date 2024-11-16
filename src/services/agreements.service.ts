@@ -6,30 +6,30 @@ import type {
   SingleSale,
   SingleTenancy,
 } from '@/types/agreements'
-import api from './http.service'
+import api, { multipartHeaders } from './http.service'
 
 class AgreementsService {
   static createDeedOfAssignment(data: SingleDeed) {
-    return api.post<{ message: string }>('/agreements/deed-of-assignment', data)
+    return api.post<{ message: string }>('/agreements/deed', data, multipartHeaders)
   }
   static updateDeedOfAssignment(data: SingleDeed) {
-    return api.put<{ message: string }>(`/agreements/deed-of-assignment/${data.id}`, data)
+    return api.put<{ message: string }>(`/agreements/deed/${data.id}`, data, multipartHeaders)
   }
   static deleteDeedOfAssignment(id: string) {
-    return api.delete<{ message: string }>(`/agreements/deed-of-assignment/${id}`)
+    return api.delete<{ message: string }>(`/agreements/deed/${id}`)
   }
   static getDeedOfAssignment(id: string) {
-    return api.get<SingleDeed>(`/agreements/deed-of-assignment/${id}`)
+    return api.get<SingleDeed>(`/agreements/deed/${id}`)
   }
   static getAllDeedOfAssignments() {
-    return api.get<SingleDeed[]>('/agreements/deed-of-assignment')
+    return api.get<SingleDeed[]>('/agreements/deed')
   }
 
   static createLeaseAgreement(data: SingleLease) {
-    return api.post<{ message: string }>('/agreements/lease', data)
+    return api.post<{ message: string }>('/agreements/lease', data, multipartHeaders)
   }
   static updateLeaseAgreement(data: SingleLease) {
-    return api.put<{ message: string }>(`/agreements/lease/${data.id}`, data)
+    return api.put<{ message: string }>(`/agreements/lease/${data.id}`, data, multipartHeaders)
   }
   static deleteLeaseAgreement(id: string) {
     return api.delete<{ message: string }>(`/agreements/lease/${id}`)
@@ -42,10 +42,10 @@ class AgreementsService {
   }
 
   static createLoanAgreement(data: SingleLoan) {
-    return api.post<{ message: string }>('/agreements/loan', data)
+    return api.post<{ message: string }>('/agreements/loan', data, multipartHeaders)
   }
   static updateLoanAgreement(data: SingleLoan) {
-    return api.put<{ message: string }>(`/agreements/loan/${data.id}`, data)
+    return api.put<{ message: string }>(`/agreements/loan/${data.id}`, data, multipartHeaders)
   }
   static deleteLoanAgreement(id: string) {
     return api.delete<{ message: string }>(`/agreements/loan/${id}`)
@@ -58,26 +58,26 @@ class AgreementsService {
   }
 
   static createPowerOfAttorney(data: SinglePower) {
-    return api.post<{ message: string }>('/agreements/power-of-attorney', data)
+    return api.post<{ message: string }>('/agreements/power', data, multipartHeaders)
   }
   static updatePowerOfAttorney(data: SinglePower) {
-    return api.put<{ message: string }>(`/agreements/power-of-attorney/${data.id}`, data)
+    return api.put<{ message: string }>(`/agreements/power/${data.id}`, data, multipartHeaders)
   }
   static deletePowerOfAttorney(id: string) {
-    return api.delete<{ message: string }>(`/agreements/power-of-attorney/${id}`)
+    return api.delete<{ message: string }>(`/agreements/power/${id}`)
   }
   static getPowerOfAttorney(id: string) {
-    return api.get<SinglePower>(`/agreements/power-of-attorney/${id}`)
+    return api.get<SinglePower>(`/agreements/power/${id}`)
   }
   static getAllPowerOfAttorneys() {
-    return api.get<SinglePower[]>('/agreements/power-of-attorney')
+    return api.get<SinglePower[]>('/agreements/power')
   }
 
   static createSaleAgreement(data: SingleSale) {
-    return api.post<{ message: string }>('/agreements/sale', data)
+    return api.post<{ message: string }>('/agreements/sale', data, multipartHeaders)
   }
   static updateSaleAgreement(data: SingleSale) {
-    return api.put<{ message: string }>(`/agreements/sale/${data.id}`, data)
+    return api.put<{ message: string }>(`/agreements/sale/${data.id}`, data, multipartHeaders)
   }
   static deleteSaleAgreement(id: string) {
     return api.delete<{ message: string }>(`/agreements/sale/${id}`)
@@ -90,10 +90,10 @@ class AgreementsService {
   }
 
   static createTenancyAgreement(data: SingleTenancy) {
-    return api.post<{ message: string }>('/agreements/tenancy', data)
+    return api.post<{ message: string }>('/agreements/tenancy', data, multipartHeaders)
   }
   static updateTenancyAgreement(data: SingleTenancy) {
-    return api.put<{ message: string }>(`/agreements/tenancy/${data.id}`, data)
+    return api.put<{ message: string }>(`/agreements/tenancy/${data.id}`, data, multipartHeaders)
   }
   static deleteTenancyAgreement(id: string) {
     return api.delete<{ message: string }>(`/agreements/tenancy/${id}`)

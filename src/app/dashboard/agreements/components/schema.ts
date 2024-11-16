@@ -5,7 +5,7 @@ export const tenancySchema = z.object({
   landlordAddress: z.string(),
   tenantName: z.string(),
   tenantAddress: z.string(),
-  amount: z.number(),
+  amount: z.string(),
   propertyDescription: z.string(),
   duration: z.string(),
   files: z.array(

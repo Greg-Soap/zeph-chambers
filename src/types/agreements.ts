@@ -1,5 +1,5 @@
 export interface SingleTenancy {
-  id: string
+  id?: string
   landlordName: string
   landlordAddress: string
   tenantName: string
@@ -10,7 +10,7 @@ export interface SingleTenancy {
 }
 
 export interface SingleSale {
-  id: string
+  id?: string
   vendorName: string
   purchaserName: string
   propertyDescription: string
@@ -18,7 +18,7 @@ export interface SingleSale {
 }
 
 export interface SingleDeed {
-  id: string
+  id?: string
   assignorName: string
   assignorAddress: string
   assigneeName: string
@@ -29,7 +29,7 @@ export interface SingleDeed {
 }
 
 export interface SinglePower {
-  id: string
+  id?: string
   donorName: string
   donorAddress: string
   doneeName: string
@@ -38,7 +38,7 @@ export interface SinglePower {
 }
 
 export interface SingleLoan {
-  id: string
+  id?: string
   lenderName: string
   borrowerName: string
   interestRate: number
@@ -47,7 +47,7 @@ export interface SingleLoan {
 }
 
 export interface SingleLease {
-  id: string
+  id?: string
   leaserName: string
   leaserAddress: string
   lesseeName: string
