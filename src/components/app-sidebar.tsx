@@ -13,12 +13,14 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
-import { Box2, UserOctagon } from 'iconsax-react'
+import { Box2, Crown1, UserOctagon } from 'iconsax-react'
 import { useMutation } from '@tanstack/react-query'
 import zephService from '@/services/zeph.service'
 import { useRouter } from 'next/navigation'
 import { removeToken } from '@/lib/cookies'
 import { toast } from 'sonner'
+import { Badge } from './ui/badge'
+import { useAppStore } from '@/store/use-app-store'
 
 // Menu items.
 const items = [
@@ -49,12 +51,13 @@ const items = [
 export function AppSidebar() {
   const pathname = usePathname()
   const router = useRouter()
+  const { user, isAdmin } = useAppStore()
   const { mutate: logout } = useMutation({
     mutationFn: () => zephService.logout(),
     onSuccess: (data) => {
       removeToken()
       toast.success(data.data.message || 'Logged out successfully')
-      router.push('/login')
+      router.push('/auth/login')
     },
   })
 
@@ -62,8 +65,21 @@ export function AppSidebar() {
     <Sidebar className='bg-[#151921]'>
       <SidebarHeader>
         <SidebarMenu>
-          <SidebarMenuItem className='p-4 rounded-[8px] bg-primary'>
-            <img src='/assets/logo.svg' alt='logohere' className='w-[120px] h-[120px] mx-auto' />
+          <SidebarMenuItem className='p-4  border-b'>
+            <div className='flex items-center gap-3'>
+              <div className='flex flex-col'>
+                <div className='flex items-center gap-2 flex-wrap'>
+                  <span className='font-medium'>{user?.fullName}</span>
+                  {isAdmin && (
+                    <Badge variant='secondary' className='flex items-center gap-1 bg-primary'>
+                      <Crown1 size={14} color='black' />
+                      Admin
+                    </Badge>
+                  )}
+                </div>
+                <span className='text-sm text-white/50 mt-1'>{user?.email}</span>
+              </div>
+            </div>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarHeader>
@@ -91,7 +107,9 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton className='py-3 h-full text-xl' onClick={() => logout()}>
+                <SidebarMenuButton
+                  className='py-3 h-full text-xl hover:bg-primary/80 transition-colors duration-300'
+                  onClick={() => logout()}>
                   <LogOut size={32} />
                   <span>Logout</span>
                 </SidebarMenuButton>

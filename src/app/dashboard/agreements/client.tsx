@@ -11,7 +11,8 @@ import { useRouter } from 'next/navigation'
 import { startCase, toDashCase } from '@/lib/helper-func'
 import type { ModelObject } from '@/lib/cookies'
 import agreementsService from '@/services/agreements.service'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
+import LoadingOverlay from '@/components/loading-overlay'
 
 export const AGREEMENT_TYPES = {
   TENANCY: 'tenancy',
@@ -31,6 +32,7 @@ interface AgreementTableContainerProps {
 function AgreementTableContainer({ type }: AgreementTableContainerProps) {
   const router = useRouter()
   const isMobile = useIsMobile()
+  const qc = useQueryClient()
 
   const { data: agreements, isLoading: isFetching } = useQuery({
     queryKey: ['agreements', type],
@@ -54,12 +56,40 @@ function AgreementTableContainer({ type }: AgreementTableContainerProps) {
     },
   })
 
+  const { mutate: deleteAgreement, isPending: isDeleting } = useMutation({
+    mutationFn: async (agreement: ModelObject) => {
+      switch (type) {
+        case AGREEMENT_TYPES.TENANCY:
+          return agreementsService.deleteTenancyAgreement(agreement.id)
+        case AGREEMENT_TYPES.SALES:
+          return agreementsService.deleteSaleAgreement(agreement.id)
+        case AGREEMENT_TYPES.DEED:
+          return agreementsService.deleteDeedOfAssignment(agreement.id)
+        case AGREEMENT_TYPES.POWER:
+          return agreementsService.deletePowerOfAttorney(agreement.id)
+        case AGREEMENT_TYPES.LOAN:
+          return agreementsService.deleteLoanAgreement(agreement.id)
+        case AGREEMENT_TYPES.LEASE:
+          return agreementsService.deleteLeaseAgreement(agreement.id)
+        default:
+          throw new Error(`Unknown agreement type: ${type}`)
+      }
+    },
+    onSuccess: (response) => {
+      toast.success(response?.data?.message || `${startCase(type)} agreement deleted successfully`)
+      qc.invalidateQueries({ queryKey: ['agreements', type] })
+    },
+    onError: (error: Error) => {
+      toast.error(error?.message || `Failed to delete ${type} agreement`)
+    },
+  })
+
   const handleEdit = (agreement: ModelObject) => {
     router.push(`/dashboard/agreements/${toDashCase(type)}/edit?id=${agreement.id}`)
   }
 
   const handleDelete = (agreement: ModelObject) => {
-    toast.error(`Deleting agreement: ${agreement.title}`)
+    deleteAgreement(agreement)
   }
 
   const handleView = (agreement: ModelObject) => {
@@ -67,24 +97,27 @@ function AgreementTableContainer({ type }: AgreementTableContainerProps) {
   }
 
   return (
-    <div className='space-y-4'>
-      <div className='flex justify-between items-center'>
-        <h2 className='text-lg md:text-2xl font-bold capitalize'>{startCase(type)} Agreements</h2>
-        <Button onClick={() => router.push(`/dashboard/agreements/${toDashCase(type)}/create`)}>
-          <Plus className='mr-0 md:mr-2 h-4 w-4' />
-          {isMobile ? '' : `Add ${type}`}
-        </Button>
-      </div>
+    <>
+      <LoadingOverlay isLoading={isDeleting} />
+      <div className='space-y-4'>
+        <div className='flex justify-between items-center'>
+          <h2 className='text-lg md:text-2xl font-bold capitalize'>{startCase(type)} Agreements</h2>
+          <Button onClick={() => router.push(`/dashboard/agreements/${toDashCase(type)}/create`)}>
+            <Plus className='mr-0 md:mr-2 h-4 w-4' />
+            {isMobile ? '' : `Add ${type}`}
+          </Button>
+        </div>
 
-      <AgreementTable
-        type={type}
-        data={agreements?.data ?? []}
-        isLoading={isFetching}
-        onEdit={handleEdit}
-        onDelete={handleDelete}
-        onView={handleView}
-      />
-    </div>
+        <AgreementTable
+          type={type}
+          data={agreements?.data ?? []}
+          isLoading={isFetching}
+          onEdit={handleEdit}
+          onDelete={handleDelete}
+          onView={handleView}
+        />
+      </div>
+    </>
   )
 }
 

@@ -1,17 +1,17 @@
-"use client";
+'use client'
 
-import { getToken } from "@/lib/cookies";
-import { useGlobalAction, useGlobalStore } from "./store-hooks";
+import { getToken } from '@/lib/cookies'
+import { useGlobalAction, useGlobalStore } from './store-hooks'
 
 export function useAppStore() {
-  const token = getToken();
+  const token = getToken()
 
   // User-related state and actions
-  const { user, isAuthenticated } = useGlobalStore((state) => state?.auth);
-  const { setUser, clearUser } = useGlobalAction((actions) => actions?.auth);
-  const userId = user?.id;
+  const { user, isAuthenticated, isAdmin } = useGlobalStore((state) => state?.auth)
+  const { setUser, clearUser } = useGlobalAction((actions) => actions?.auth)
+  const userId = user?.id
 
-  const notUser = !user || !token;
+  const notUser = !user || !token
 
   return {
     user,
@@ -20,5 +20,6 @@ export function useAppStore() {
     clearUser,
     isAuthenticated,
     notUser,
-  };
+    isAdmin,
+  }
 }

@@ -1,3 +1,24 @@
+export interface Files {
+  createdAt: string
+  fileableId: string
+  fileableType: string
+  id: string
+  isArchived: boolean
+  originalName: string
+  publicId: string
+  resourceType: string
+  secureUrl: string
+  updatedAt: string
+  userId: string
+}
+
+interface User {
+  id: string
+  fullName: string
+  email: string
+  isArchived: boolean
+}
+
 export interface SingleTenancy {
   id?: string
   landlordName: string
@@ -7,6 +28,8 @@ export interface SingleTenancy {
   propertyDescription: string
   duration: string
   amount: number
+  uploadedFiles?: Files[]
+  user?: User
 }
 
 export interface SingleSale {
@@ -15,6 +38,8 @@ export interface SingleSale {
   purchaserName: string
   propertyDescription: string
   amount: number
+  uploadedFiles?: Files[]
+  user?: User
 }
 
 export interface SingleDeed {
@@ -26,6 +51,8 @@ export interface SingleDeed {
   propertyDescription: string
   duration: string
   amount: number
+  uploadedFiles?: Files[]
+  user?: User
 }
 
 export interface SinglePower {
@@ -35,6 +62,8 @@ export interface SinglePower {
   doneeName: string
   doneeAddress: string
   propertyDescription: string
+  uploadedFiles?: Files[]
+  user?: User
 }
 
 export interface SingleLoan {
@@ -44,6 +73,8 @@ export interface SingleLoan {
   interestRate: number
   duration: string
   amount: number
+  uploadedFiles?: Files[]
+  user?: User
 }
 
 export interface SingleLease {
@@ -55,6 +86,8 @@ export interface SingleLease {
   propertyDescription: string
   duration: string
   amount: number
+  uploadedFiles?: Files[]
+  user?: User
 }
 
 export interface Tenancies {

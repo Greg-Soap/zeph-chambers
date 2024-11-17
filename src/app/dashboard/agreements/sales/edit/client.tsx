@@ -15,6 +15,7 @@ import agreementsService from '@/services/agreements.service'
 import type { z } from 'zod'
 import MiniLoader from '@/components/mini-loader'
 import PageHeader from '../../components/page-header'
+import { AgreementFileUpload } from '../../components/agreement-file-upload'
 
 type SalesFormData = z.infer<typeof salesSchema>
 
@@ -29,8 +30,7 @@ export default function Client() {
       vendorName: '',
       purchaserName: '',
       propertyDescription: '',
-      amount: 0,
-      files: [],
+      amount: '',
     },
   })
 
@@ -64,8 +64,7 @@ export default function Client() {
         vendorName: sale.data.vendorName,
         purchaserName: sale.data.purchaserName,
         propertyDescription: sale.data.propertyDescription,
-        amount: sale.data.amount,
-        files: [], // Add existing files if any
+        amount: sale.data.amount.toString(),
       })
     }
   }, [sale?.data, form])
@@ -77,6 +76,7 @@ export default function Client() {
     updateSale({
       ...data,
       id: saleId,
+      amount: Number(data.amount),
     })
   }
 
@@ -167,21 +167,6 @@ export default function Client() {
                   disabled={isUpdating}
                 />
               </FormField>
-            </div>
-          </div>
-
-          {/* Supporting Documents Section */}
-          <div className='space-y-4'>
-            <h2 className='text-lg font-semibold'>Supporting Documents</h2>
-            <div className='rounded-lg border border-dashed p-6'>
-              <div className='text-center'>
-                <p className='text-sm text-muted-foreground'>
-                  Upload property documents, title deeds, and other relevant files
-                </p>
-                <p className='text-xs text-muted-foreground mt-1'>
-                  Accepted formats: PDF, JPG, PNG (Max: 10MB per file)
-                </p>
-              </div>
             </div>
           </div>
         </div>

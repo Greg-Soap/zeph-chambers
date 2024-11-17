@@ -13,6 +13,7 @@ import type { z } from 'zod'
 import agreementsService from '@/services/agreements.service'
 import { useMutation } from '@tanstack/react-query'
 import PageHeader from '../../components/page-header'
+import { AgreementFileUpload } from '../../components/agreement-file-upload'
 
 type LoanFormData = z.infer<typeof loanSchema>
 
@@ -26,8 +27,7 @@ export default function Client() {
       borrowerName: '',
       interestRate: 0,
       duration: '',
-      amount: 0,
-      files: [],
+      amount: '',
     },
   })
 
@@ -37,13 +37,13 @@ export default function Client() {
       toast.success('Loan agreement created successfully')
       router.push('/dashboard/agreements?tab=loan')
     },
-    onError: () => {
-      toast.error('Failed to create loan agreement')
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message || 'Failed to create loan agreement')
     },
   })
 
   const handleSubmit = (data: LoanFormData) => {
-    createLoan(data)
+    createLoan({ ...data, amount: Number(data.amount) })
   }
 
   return (
@@ -125,19 +125,7 @@ export default function Client() {
           </div>
 
           {/* Supporting Documents Section */}
-          <div className='space-y-4'>
-            <h2 className='text-lg font-semibold'>Supporting Documents</h2>
-            <div className='rounded-lg border border-dashed p-6'>
-              <div className='text-center'>
-                <p className='text-sm text-muted-foreground'>
-                  Upload any supporting documents (ID, proof of income, etc.)
-                </p>
-                <p className='text-xs text-muted-foreground mt-1'>
-                  Accepted formats: PDF, JPG, PNG (Max: 10MB per file)
-                </p>
-              </div>
-            </div>
-          </div>
+          <AgreementFileUpload />
         </div>
 
         <div className='flex justify-end gap-4 pt-4'>

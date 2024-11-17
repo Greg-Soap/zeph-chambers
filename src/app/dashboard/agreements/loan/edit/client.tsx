@@ -30,8 +30,7 @@ export default function Client() {
       borrowerName: '',
       interestRate: 0,
       duration: '',
-      amount: 0,
-      files: [],
+      amount: '',
     },
   })
 
@@ -66,8 +65,7 @@ export default function Client() {
         borrowerName: loan.data.borrowerName,
         interestRate: loan.data.interestRate,
         duration: loan.data.duration,
-        amount: loan.data.amount,
-        files: [], // Add existing files if any
+        amount: loan.data.amount.toString(),
       })
     }
   }, [loan?.data, form])
@@ -79,6 +77,7 @@ export default function Client() {
     updateLoan({
       ...data,
       id: loanId,
+      amount: Number(data.amount),
     })
   }
 
@@ -185,21 +184,6 @@ export default function Client() {
                   disabled={isUpdating}
                 />
               </FormField>
-            </div>
-          </div>
-
-          {/* Supporting Documents Section */}
-          <div className='space-y-4'>
-            <h2 className='text-lg font-semibold'>Supporting Documents</h2>
-            <div className='rounded-lg border border-dashed p-6'>
-              <div className='text-center'>
-                <p className='text-sm text-muted-foreground'>
-                  Upload any supporting documents (ID, proof of income, etc.)
-                </p>
-                <p className='text-xs text-muted-foreground mt-1'>
-                  Accepted formats: PDF, JPG, PNG (Max: 10MB per file)
-                </p>
-              </div>
             </div>
           </div>
         </div>

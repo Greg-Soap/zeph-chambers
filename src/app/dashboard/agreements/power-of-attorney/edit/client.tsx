@@ -15,6 +15,7 @@ import agreementsService from '@/services/agreements.service'
 import type { z } from 'zod'
 import MiniLoader from '@/components/mini-loader'
 import PageHeader from '../../components/page-header'
+import { AgreementFileUpload } from '../../components/agreement-file-upload'
 
 type PowerFormData = z.infer<typeof powerSchema>
 
@@ -185,21 +186,6 @@ export default function Client() {
                 disabled={isUpdating}
               />
             </FormField>
-          </div>
-
-          {/* Supporting Documents Section */}
-          <div className='space-y-4'>
-            <h2 className='text-lg font-semibold'>Supporting Documents</h2>
-            <div className='rounded-lg border border-dashed p-6'>
-              <div className='text-center'>
-                <p className='text-sm text-muted-foreground'>
-                  Upload identification documents and other supporting materials
-                </p>
-                <p className='text-xs text-muted-foreground mt-1'>
-                  Accepted formats: PDF, JPG, PNG (Max: 10MB per file)
-                </p>
-              </div>
-            </div>
           </div>
         </div>
 

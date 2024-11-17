@@ -6,6 +6,7 @@ export interface AuthStoreModel {
   setUser: Action<AuthStoreModel, User>
   clearUser: Action<AuthStoreModel>
   isAuthenticated: Computed<AuthStoreModel, boolean>
+  isAdmin: Computed<AuthStoreModel, boolean>
 }
 
 const authStore: AuthStoreModel = {
@@ -19,6 +20,7 @@ const authStore: AuthStoreModel = {
     state.user = null
   }),
   isAuthenticated: computed((state) => !!state.user),
+  isAdmin: computed((state) => state.user?.isAdmin ?? false),
 }
 
 export default authStore

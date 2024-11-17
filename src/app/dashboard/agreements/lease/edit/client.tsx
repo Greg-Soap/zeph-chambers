@@ -32,8 +32,7 @@ export default function Client() {
       lesseeAddress: '',
       propertyDescription: '',
       duration: '',
-      amount: 0,
-      files: [],
+      amount: '',
     },
   })
 
@@ -70,8 +69,7 @@ export default function Client() {
         lesseeAddress: lease.data.lesseeAddress,
         propertyDescription: lease.data.propertyDescription,
         duration: lease.data.duration,
-        amount: lease.data.amount,
-        files: [], // Add existing files if any
+        amount: lease.data.amount.toString(),
       })
     }
   }, [lease?.data, form])
@@ -83,6 +81,7 @@ export default function Client() {
     updateLease({
       ...data,
       id: leaseId,
+      amount: Number(data.amount),
     })
   }
 
@@ -219,21 +218,6 @@ export default function Client() {
                 disabled={isUpdating}
               />
             </FormField>
-          </div>
-
-          {/* Supporting Documents Section */}
-          <div className='space-y-4'>
-            <h2 className='text-lg font-semibold'>Supporting Documents</h2>
-            <div className='rounded-lg border border-dashed p-6'>
-              <div className='text-center'>
-                <p className='text-sm text-muted-foreground'>
-                  Upload property documentation and other relevant files
-                </p>
-                <p className='text-xs text-muted-foreground mt-1'>
-                  Accepted formats: PDF, JPG, PNG (Max: 10MB per file)
-                </p>
-              </div>
-            </div>
           </div>
         </div>
 

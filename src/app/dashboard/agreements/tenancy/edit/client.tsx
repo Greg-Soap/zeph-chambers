@@ -33,7 +33,6 @@ export default function Client() {
       propertyDescription: '',
       duration: '',
       amount: '',
-      files: [],
     },
   })
 
@@ -71,7 +70,6 @@ export default function Client() {
         propertyDescription: tenancy.data.propertyDescription,
         duration: tenancy.data.duration,
         amount: tenancy.data.amount.toString(),
-        files: [], // Add existing files if any
       })
     }
   }, [tenancy?.data, form])
@@ -100,6 +98,8 @@ export default function Client() {
       </div>
     )
   }
+
+  console.log({ error: form.formState.errors })
 
   return (
     <div className='container max-w-4xl py-6'>
@@ -220,21 +220,6 @@ export default function Client() {
                 disabled={isUpdating}
               />
             </FormField>
-          </div>
-
-          {/* Supporting Documents Section */}
-          <div className='space-y-4'>
-            <h2 className='text-lg font-semibold'>Supporting Documents</h2>
-            <div className='rounded-lg border border-dashed p-6'>
-              <div className='text-center'>
-                <p className='text-sm text-muted-foreground'>
-                  Upload property documentation and other relevant files
-                </p>
-                <p className='text-xs text-muted-foreground mt-1'>
-                  Accepted formats: PDF, JPG, PNG (Max: 10MB per file)
-                </p>
-              </div>
-            </div>
           </div>
         </div>
 

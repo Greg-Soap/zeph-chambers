@@ -13,6 +13,7 @@ import type { z } from 'zod'
 import PageHeader from '../../components/page-header'
 import { useMutation } from '@tanstack/react-query'
 import agreementsService from '@/services/agreements.service'
+import { AgreementFileUpload } from '../../components/agreement-file-upload'
 
 type DeedFormData = z.infer<typeof deedSchema>
 
@@ -28,7 +29,7 @@ export default function Client() {
       assigneeAddress: '',
       propertyDescription: '',
       duration: '',
-      amount: 0,
+      amount: '',
       files: [],
     },
   })
@@ -39,13 +40,13 @@ export default function Client() {
       toast.success('Deed of Assignment created successfully')
       router.push('/dashboard/agreements?tab=deed')
     },
-    onError: () => {
-      toast.error('Failed to create Deed of Assignment')
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message || 'Failed to create Deed of Assignment')
     },
   })
 
   const handleSubmit = (data: DeedFormData) => {
-    createDeed(data)
+    createDeed({ ...data, amount: Number(data.amount) })
   }
 
   return (
@@ -148,19 +149,7 @@ export default function Client() {
           </div>
 
           {/* Supporting Documents Section */}
-          <div className='space-y-4'>
-            <h2 className='text-lg font-semibold'>Supporting Documents</h2>
-            <div className='rounded-lg border border-dashed p-6'>
-              <div className='text-center'>
-                <p className='text-sm text-muted-foreground'>
-                  Upload property documents, title deeds, and other relevant files
-                </p>
-                <p className='text-xs text-muted-foreground mt-1'>
-                  Accepted formats: PDF, JPG, PNG (Max: 10MB per file)
-                </p>
-              </div>
-            </div>
-          </div>
+          <AgreementFileUpload />
         </div>
 
         <div className='flex justify-end gap-4 pt-4'>

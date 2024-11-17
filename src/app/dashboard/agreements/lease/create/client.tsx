@@ -11,6 +11,9 @@ import { CustomInput } from '@/components/customs/custom-input'
 import { leaseSchema } from '../../components/schema'
 import type { z } from 'zod'
 import PageHeader from '../../components/page-header'
+import { AgreementFileUpload } from '../../components/agreement-file-upload'
+import { useMutation } from '@tanstack/react-query'
+import agreementsService from '@/services/agreements.service'
 
 type LeaseFormData = z.infer<typeof leaseSchema>
 
@@ -26,20 +29,24 @@ export default function Client() {
       lesseeAddress: '',
       propertyDescription: '',
       duration: '',
-      amount: 0,
+      amount: '',
       files: [],
     },
   })
 
-  async function handleSubmit(data: LeaseFormData) {
-    try {
-      // Add your API call here
-      console.log(data)
+  const { mutate: createLease, isPending } = useMutation({
+    mutationFn: agreementsService.createLeaseAgreement,
+    onSuccess: () => {
       toast.success('Lease agreement created successfully')
       router.push('/dashboard/agreements?tab=lease')
-    } catch (error) {
-      toast.error('Failed to create lease agreement')
-    }
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message || 'Failed to create lease agreement')
+    },
+  })
+
+  const handleSubmit = (data: LeaseFormData) => {
+    createLease({ ...data, amount: Number(data.amount) })
   }
 
   return (
@@ -142,26 +149,16 @@ export default function Client() {
           </div>
 
           {/* Supporting Documents Section */}
-          <div className='space-y-4'>
-            <h2 className='text-lg font-semibold'>Supporting Documents</h2>
-            <div className='rounded-lg border border-dashed p-6'>
-              <div className='text-center'>
-                <p className='text-sm text-muted-foreground'>
-                  Upload property documentation and other relevant files
-                </p>
-                <p className='text-xs text-muted-foreground mt-1'>
-                  Accepted formats: PDF, JPG, PNG (Max: 10MB per file)
-                </p>
-              </div>
-            </div>
-          </div>
+          <AgreementFileUpload />
         </div>
 
         <div className='flex justify-end gap-4 pt-4'>
           <Button type='button' variant='outline' onClick={() => router.back()}>
             Cancel
           </Button>
-          <Button type='submit'>Create Lease Agreement</Button>
+          <Button type='submit' disabled={isPending}>
+            {isPending ? 'Creating...' : 'Create Lease Agreement'}
+          </Button>
         </div>
       </FormBase>
     </div>

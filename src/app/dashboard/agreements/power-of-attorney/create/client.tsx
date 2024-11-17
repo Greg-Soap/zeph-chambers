@@ -13,6 +13,7 @@ import type { z } from 'zod'
 import PageHeader from '../../components/page-header'
 import agreementsService from '@/services/agreements.service'
 import { useMutation } from '@tanstack/react-query'
+import { AgreementFileUpload } from '../../components/agreement-file-upload'
 
 type PowerFormData = z.infer<typeof powerSchema>
 
@@ -37,8 +38,8 @@ export default function Client() {
       toast.success('Power of Attorney created successfully')
       router.push('/dashboard/agreements?tab=power')
     },
-    onError: () => {
-      toast.error('Failed to create Power of Attorney')
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message || 'Failed to create Power of Attorney')
     },
   })
 
@@ -59,11 +60,21 @@ export default function Client() {
           <div className='space-y-4'>
             <h2 className='text-lg font-semibold'>Donor Details</h2>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-              <FormField form={form} name='donorName' label='Donor Name' showMessage>
+              <FormField
+                form={form}
+                name='donorName'
+                label='Donor Name'
+                description='Individual granting the power of attorney'
+                showMessage>
                 <CustomInput variant='input' placeholder="Enter donor's full name" />
               </FormField>
 
-              <FormField form={form} name='donorAddress' label='Donor Address' showMessage>
+              <FormField
+                form={form}
+                name='donorAddress'
+                label='Donor Address'
+                description='Current address of the donor'
+                showMessage>
                 <CustomInput variant='input' placeholder="Enter donor's address" />
               </FormField>
             </div>
@@ -73,11 +84,21 @@ export default function Client() {
           <div className='space-y-4'>
             <h2 className='text-lg font-semibold'>Donee Details</h2>
             <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-              <FormField form={form} name='doneeName' label='Donee Name' showMessage>
+              <FormField
+                form={form}
+                name='doneeName'
+                label='Donee Name'
+                description='Individual receiving the power of attorney'
+                showMessage>
                 <CustomInput variant='input' placeholder="Enter donee's full name" />
               </FormField>
 
-              <FormField form={form} name='doneeAddress' label='Donee Address' showMessage>
+              <FormField
+                form={form}
+                name='doneeAddress'
+                label='Donee Address'
+                description='Current address of the donee'
+                showMessage>
                 <CustomInput variant='input' placeholder="Enter donee's address" />
               </FormField>
             </div>
@@ -100,20 +121,8 @@ export default function Client() {
             </FormField>
           </div>
 
-          {/* File Upload Section */}
-          <div className='space-y-4'>
-            <h2 className='text-lg font-semibold'>Supporting Documents</h2>
-            <div className='rounded-lg border border-dashed p-6'>
-              <div className='text-center'>
-                <p className='text-sm text-muted-foreground'>
-                  Upload identification documents and other supporting materials
-                </p>
-                <p className='text-xs text-muted-foreground mt-1'>
-                  Accepted formats: PDF, JPG, PNG (Max: 10MB per file)
-                </p>
-              </div>
-            </div>
-          </div>
+          {/* Supporting Documents Section */}
+          <AgreementFileUpload />
         </div>
 
         <div className='flex justify-end gap-4 pt-4'>

@@ -11,14 +11,16 @@ import { CustomInput } from '@/components/customs/custom-input'
 import { salesSchema } from '../../components/schema'
 import type { z } from 'zod'
 import type { SingleSale } from '@/types/agreements'
-import { useMutation } from '@tanstack/react-query'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import agreementsService from '@/services/agreements.service'
 import PageHeader from '../../components/page-header'
+import { AgreementFileUpload } from '../../components/agreement-file-upload'
 
 type SalesFormData = z.infer<typeof salesSchema>
 
 export default function Client() {
   const router = useRouter()
+  const qc = useQueryClient()
 
   const form = useForm<SalesFormData>({
     resolver: zodResolver(salesSchema),
@@ -26,7 +28,7 @@ export default function Client() {
       vendorName: '',
       purchaserName: '',
       propertyDescription: '',
-      amount: 0,
+      amount: '',
       files: [],
     },
   })
@@ -35,10 +37,11 @@ export default function Client() {
     mutationFn: (data: SingleSale) => agreementsService.createSaleAgreement(data),
     onSuccess: () => {
       toast.success('Sales agreement created successfully')
+      qc.invalidateQueries({ queryKey: ['agreements'] })
       router.push('/dashboard/agreements?tab=sales')
     },
-    onError: () => {
-      toast.error('Failed to create sales agreement')
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message || 'Failed to create sales agreement')
     },
   })
 
@@ -55,20 +58,40 @@ export default function Client() {
 
       <FormBase form={form} onSubmit={handleSubmit} className='space-y-6'>
         <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-          <FormField form={form} name='vendorName' label='Vendor Name' showMessage>
+          <FormField
+            form={form}
+            name='vendorName'
+            label='Vendor Name'
+            description='Individual or organization selling the property'
+            showMessage>
             <CustomInput variant='input' placeholder="Enter vendor's name" />
           </FormField>
 
-          <FormField form={form} name='purchaserName' label='Purchaser Name' showMessage>
+          <FormField
+            form={form}
+            name='purchaserName'
+            label='Purchaser Name'
+            description='Individual or organization buying the property'
+            showMessage>
             <CustomInput variant='input' placeholder="Enter purchaser's name" />
           </FormField>
 
-          <FormField form={form} name='amount' label='Purchase Amount' showMessage>
+          <FormField
+            form={form}
+            name='amount'
+            label='Purchase Amount'
+            description='Amount paid by the purchaser'
+            showMessage>
             <CustomInput variant='input' type='number' placeholder='Enter purchase amount' />
           </FormField>
         </div>
 
-        <FormField form={form} name='propertyDescription' label='Property Description' showMessage>
+        <FormField
+          form={form}
+          name='propertyDescription'
+          label='Property Description'
+          description='Detailed description of the property being sold'
+          showMessage>
           <CustomInput
             variant='textarea'
             placeholder='Enter detailed property description'
@@ -76,15 +99,8 @@ export default function Client() {
           />
         </FormField>
 
-        {/* File Upload Section - To be implemented */}
-        <div className='rounded-lg border border-dashed p-6'>
-          <div className='text-center'>
-            <p className='text-sm text-muted-foreground'>
-              Drag and drop files here or click to select files
-            </p>
-            <p className='text-xs text-muted-foreground mt-1'>Maximum file size: 10MB</p>
-          </div>
-        </div>
+        {/* Supporting Documents Section */}
+        <AgreementFileUpload />
 
         <div className='flex justify-end gap-4'>
           <Button type='button' variant='outline' onClick={() => router.back()}>
