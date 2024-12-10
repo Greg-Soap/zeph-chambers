@@ -1,5 +1,5 @@
 'use client'
-import { Handshake, LogOut } from 'lucide-react'
+import { Box, Handshake, LogOut, UserCircle2 } from 'lucide-react'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
 
@@ -13,7 +13,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from '@/components/ui/sidebar'
-import { Box2, Crown1, UserOctagon } from 'iconsax-react'
+import { Crown1 } from 'iconsax-react'
 import { useMutation } from '@tanstack/react-query'
 import zephService from '@/services/zeph.service'
 import { useRouter } from 'next/navigation'
@@ -26,24 +26,17 @@ import { useAppStore } from '@/store/use-app-store'
 const items = [
   {
     title: 'Agreements',
-    icon: <Handshake size={32} className='w-[32px] h-[32px] text-white' />,
+    icon: <Handshake size={32} className='w-[32px] h-[32px] text-inherit' />,
     url: '/dashboard/agreements',
   },
   {
     title: 'Litigations',
-    icon: <Box2 size={32} variant='Bold' color='white' className='w-[32px] h-[32px] text-white' />,
+    icon: <Box size={32} className='w-[32px] h-[32px] text-inherit' />,
     url: '/dashboard/litigations',
   },
   {
     title: 'Incorporation',
-    icon: (
-      <UserOctagon
-        size={32}
-        variant='Bold'
-        color='white'
-        className='w-[32px] h-[32px] text-white'
-      />
-    ),
+    icon: <UserCircle2 size={32} className='w-[32px] h-[32px] text-inherit' />,
     url: '/dashboard/incorporation',
   },
 ]
@@ -92,7 +85,7 @@ export function AppSidebar() {
                   <SidebarMenuButton
                     onClick={() => router.push(item.url)}
                     isActive={pathname === item.url}
-                    className='py-3 h-full data-[active=true]:bg-primary hover:bg-primary/80 transition-colors duration-300'>
+                    className='py-3 h-full data-[active=true]:bg-primary data-[active=true]:text-[#151921] hover:bg-primary/80 transition-colors duration-300'>
                     <Link href={item.url} className='flex items-center gap-2 text-xl h-full'>
                       {item.icon}
                       <span>{item.title}</span>

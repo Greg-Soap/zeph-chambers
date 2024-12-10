@@ -1,10 +1,18 @@
 'use client'
 
 import Image from 'next/image'
-import type React from 'react'
+import { useForm } from 'react-hook-form'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useMutation } from '@tanstack/react-query'
+import { toast } from 'sonner'
+
 import logoIm from '../../../../public/assets/CAC-Logo.png'
 import { Button } from '@/components/ui/button'
-import { Textarea } from '@/components/ui/textarea'
+import { z } from 'zod'
+import { FormField } from '@/components/customs/custom-form'
+import agreementsService from '@/services/agreements.service'
+import { FormBase } from '@/components/customs/custom-form'
+import { CustomInput } from '@/components/customs/custom-input'
 
 interface ServiceCardProps {
   title: string
@@ -15,13 +23,13 @@ function ServiceCard({ title, items }: ServiceCardProps) {
   return (
     <div
       className='hover:border-primary border-2 hover:scale-95 bg-dark-navy rounded-xl shadow-lg 
-                    w-full lg:w-[49%] p-4 sm:p-6 lg:p-10 transition-all duration-200'>
+                w-full lg:w-[49%] p-4 sm:p-6 lg:p-10 transition-all duration-200'>
       <h2 className='text-xl sm:text-2xl lg:text-3xl text-primary font-semibold mb-4 sm:mb-6 lg:mb-8'>
         {title}
       </h2>
       <ul
         className='space-y-2 sm:space-y-3 lg:space-y-4 list-disc list-inside 
-                     text-base sm:text-lg lg:text-xl'>
+                   text-base sm:text-lg lg:text-xl'>
         {items.map((item) => (
           <li key={item}>{item}</li>
         ))}
@@ -49,10 +57,33 @@ const postIncorporationItems = [
   "Filing of NGO's such as Church, Mosque, Foundation, Club, etc",
 ]
 
+const incorporationSchema = z.object({
+  message: z.string().min(1, { message: 'Message is required' }),
+})
+
+type IncorporationFormData = z.infer<typeof incorporationSchema>
+
 export default function Incorporation() {
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault()
-    // Add your form submission logic here
+  const form = useForm<IncorporationFormData>({
+    resolver: zodResolver(incorporationSchema),
+    defaultValues: {
+      message: '',
+    },
+  })
+
+  const { mutate: submitInquiry, isPending } = useMutation({
+    mutationFn: agreementsService.sendIncorporationMessage,
+    onSuccess: () => {
+      toast.success('Your inquiry has been submitted successfully')
+      form.reset()
+    },
+    onError: (error: any) => {
+      toast.error(error?.response?.data?.message || 'Failed to submit inquiry')
+    },
+  })
+
+  function handleSubmit(data: IncorporationFormData) {
+    submitInquiry(data)
   }
 
   return (
@@ -80,17 +111,31 @@ export default function Incorporation() {
           <ServiceCard title='POST-INCORPORATION' items={postIncorporationItems} />
         </div>
 
-        <form onSubmit={handleSubmit} className='max-w-2xl mx-auto space-y-4 sm:space-y-6'>
-          <Textarea
-            placeholder='Tell us how we may be of help to you'
-            className='min-h-[150px] sm:min-h-[180px] lg:min-h-[200px] resize-none 
-                      text-base sm:text-lg'
-            required
-          />
-          <Button type='submit' className='w-full text-base sm:text-lg py-2 sm:py-3'>
-            Submit
+        <FormBase
+          form={form}
+          onSubmit={handleSubmit}
+          className='max-w-2xl mx-auto space-y-4 sm:space-y-6'>
+          <FormField
+            form={form}
+            name='message'
+            label='Your Inquiry'
+            description='Tell us how we may be of help to you'
+            showMessage>
+            <CustomInput
+              variant='textarea'
+              placeholder='Tell us how we may be of help to you'
+              className='min-h-[150px] sm:min-h-[180px] lg:min-h-[200px] resize-none'
+              disabled={isPending}
+            />
+          </FormField>
+
+          <Button
+            type='submit'
+            className='w-full text-base sm:text-lg py-2 sm:py-3'
+            disabled={isPending}>
+            {isPending ? 'Submitting...' : 'Submit'}
           </Button>
-        </form>
+        </FormBase>
       </div>
     </div>
   )

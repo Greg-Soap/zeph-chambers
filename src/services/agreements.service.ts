@@ -104,6 +104,14 @@ class AgreementsService {
   static getAllTenancyAgreements() {
     return api.get<SingleTenancy[]>('/agreements/tenancy')
   }
+
+  static sendLitigationMessage(data: { litigation: string; message: string }) {
+    return api.post<{ message: string }>('/agreements/litigation/message', data)
+  }
+
+  static sendIncorporationMessage(data: { message: string }) {
+    return api.post<{ message: string }>('/agreements/incorporations/message', data)
+  }
 }
 
 const agreementsService = AgreementsService
