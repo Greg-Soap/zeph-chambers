@@ -30,6 +30,9 @@ export interface SingleTenancy {
   amount: number
   uploadedFiles?: Files[]
   user?: User
+  metadata?: {
+    status: 'paid' | 'unpaid'
+  }
 }
 
 export interface SingleSale {
@@ -40,6 +43,9 @@ export interface SingleSale {
   amount: number
   uploadedFiles?: Files[]
   user?: User
+  metadata?: {
+    status: 'paid' | 'unpaid'
+  }
 }
 
 export interface SingleDeed {
@@ -53,6 +59,9 @@ export interface SingleDeed {
   amount: number
   uploadedFiles?: Files[]
   user?: User
+  metadata?: {
+    status: 'paid' | 'unpaid'
+  }
 }
 
 export interface SinglePower {
@@ -64,6 +73,9 @@ export interface SinglePower {
   propertyDescription: string
   uploadedFiles?: Files[]
   user?: User
+  metadata?: {
+    status: 'paid' | 'unpaid'
+  }
 }
 
 export interface SingleLoan {
@@ -75,6 +87,9 @@ export interface SingleLoan {
   amount: number
   uploadedFiles?: Files[]
   user?: User
+  metadata?: {
+    status: 'paid' | 'unpaid'
+  }
 }
 
 export interface SingleLease {
@@ -88,6 +103,9 @@ export interface SingleLease {
   amount: number
   uploadedFiles?: Files[]
   user?: User
+  metadata?: {
+    status: 'paid' | 'unpaid'
+  }
 }
 
 export interface Tenancies {

@@ -18,6 +18,7 @@ export default function VerifyPayment() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const reference = searchParams.get('reference')
+  console.log({ reference })
 
   const { mutate: verifyPayment, isPending } = useMutation({
     mutationFn: async () => {

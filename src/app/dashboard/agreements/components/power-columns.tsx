@@ -1,6 +1,7 @@
 import type { Column } from '@/components/customs/custom-table'
 import type { SinglePower } from '@/types/agreements'
 import getTableActions from './get-table-actions'
+import { Badge } from '@/components/ui/badge'
 
 interface PowerColumnsProps {
   onEdit: (power: SinglePower) => void
@@ -35,6 +36,19 @@ export function getPowerColumns({
       width: 'w-[250px]',
       hideOnMobile: true,
       render: (value?: string) => <div className='line-clamp-2'>{value || 'Not specified'}</div>,
+    },
+    {
+      key: 'metadata.status',
+      title: 'Status',
+      width: 'w-[120px] min-w-[100px]',
+      render: (record: SinglePower) => {
+        const status = record?.metadata?.status || 'unpaid'
+        return (
+          <Badge variant={status.toLowerCase() === 'paid' ? 'default' : 'destructive'}>
+            {status}
+          </Badge>
+        )
+      },
     },
     {
       key: 'id',

@@ -12,6 +12,8 @@ import MiniLoader from '@/components/mini-loader'
 import PageHeader from '../../components/page-header'
 import SupportingDocuments from '../../components/supporting-documents'
 import LoadingOverlay from '@/components/loading-overlay'
+import { Badge } from '@/components/ui/badge'
+import PaymentButton from '@/components/payment-button'
 
 export default function Client() {
   const router = useRouter()
@@ -74,6 +76,14 @@ export default function Client() {
             description='View and manage tenancy agreement information'
           />
           <div className='flex gap-3'>
+            <Badge
+              variant={
+                tenancy?.data?.metadata?.status?.toLowerCase() === 'paid'
+                  ? 'default'
+                  : 'destructive'
+              }>
+              {tenancy?.data?.metadata?.status || 'unpaid'}
+            </Badge>
             <Button variant='outline' size='icon' onClick={handleEdit} disabled={isDeleting}>
               <Pencil className='h-4 w-4' />
             </Button>
@@ -92,7 +102,9 @@ export default function Client() {
             />
           </div>
         </div>
-
+        {tenancy?.data?.metadata?.status !== 'paid' && (
+          <PaymentButton agreementId={tenancyId} agreementType='tenancy' />
+        )}
         <div className='space-y-6'>
           {/* Landlord Information */}
           <div className='rounded-lg border p-6 space-y-4'>

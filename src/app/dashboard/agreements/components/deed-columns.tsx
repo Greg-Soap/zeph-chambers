@@ -1,6 +1,7 @@
 import type { Column } from '@/components/customs/custom-table'
 import type { SingleDeed } from '@/types/agreements'
 import getTableActions from './get-table-actions'
+import { Badge } from '@/components/ui/badge'
 
 interface DeedColumnsProps {
   onEdit: (deed: SingleDeed) => void
@@ -48,6 +49,19 @@ export function getDeedColumns({
       width: 'w-[120px]',
       hideOnTablet: true,
       render: (value?: string) => value || 'Not specified',
+    },
+    {
+      key: 'metadata.status',
+      title: 'Status',
+      width: 'w-[120px] min-w-[100px]',
+      render: (record: SingleDeed) => {
+        const status = record?.metadata?.status || 'unpaid'
+        return (
+          <Badge variant={status.toLowerCase() === 'paid' ? 'default' : 'destructive'}>
+            {status}
+          </Badge>
+        )
+      },
     },
     {
       key: 'id',

@@ -1,6 +1,7 @@
 import type { Column } from '@/components/customs/custom-table'
 import type { SingleTenancy } from '@/types/agreements'
 import getTableActions from './get-table-actions'
+import { Badge } from '@/components/ui/badge'
 
 interface TenancyColumnsProps {
   onEdit: (tenancy: SingleTenancy) => void
@@ -48,6 +49,19 @@ export function getTenancyColumns({
       width: 'w-[120px] min-w-[100px]',
       // hideOnTablet: true,
       render: (value?: string) => value || 'Not specified',
+    },
+    {
+      key: 'metadata.status',
+      title: 'Status',
+      width: 'w-[120px] min-w-[100px]',
+      render: (record: SingleTenancy) => {
+        const status = record?.metadata?.status || 'unpaid'
+        return (
+          <Badge variant={status.toLowerCase() === 'paid' ? 'default' : 'destructive'}>
+            {status}
+          </Badge>
+        )
+      },
     },
     {
       key: 'id',

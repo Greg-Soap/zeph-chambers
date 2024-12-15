@@ -3,6 +3,7 @@ import CustomTooltip from '@/components/customs/custom-tooltip'
 import type { SingleLoan } from '@/types/agreements'
 import { Edit2, Eye, Trash } from 'lucide-react'
 import getTableActions from './get-table-actions'
+import { Badge } from '@/components/ui/badge'
 
 interface LoanColumnsProps {
   onEdit: (loan: SingleLoan) => void
@@ -50,6 +51,19 @@ export function getLoanColumns({
       width: 'w-[120px]',
       hideOnTablet: true,
       render: (value?: string) => value || 'Not specified',
+    },
+    {
+      key: 'metadata.status',
+      title: 'Status',
+      width: 'w-[120px] min-w-[100px]',
+      render: (record: SingleLoan) => {
+        const status = record?.metadata?.status || 'unpaid'
+        return (
+          <Badge variant={status.toLowerCase() === 'paid' ? 'default' : 'destructive'}>
+            {status}
+          </Badge>
+        )
+      },
     },
     {
       key: 'id',

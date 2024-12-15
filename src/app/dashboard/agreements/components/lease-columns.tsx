@@ -1,6 +1,7 @@
 import type { Column } from '@/components/customs/custom-table'
 import type { SingleLease } from '@/types/agreements'
 import getTableActions from './get-table-actions'
+import { Badge } from '@/components/ui/badge'
 
 interface LeaseColumnsProps {
   onEdit: (lease: SingleLease) => void
@@ -48,6 +49,19 @@ export function getLeaseColumns({
       width: 'w-[120px]',
       hideOnTablet: true,
       render: (value?: string) => value || 'Not specified',
+    },
+    {
+      key: 'metadata.status',
+      title: 'Status',
+      width: 'w-[120px] min-w-[100px]',
+      render: (record: SingleLease) => {
+        const status = record?.metadata?.status || 'unpaid'
+        return (
+          <Badge variant={status.toLowerCase() === 'paid' ? 'default' : 'destructive'}>
+            {status}
+          </Badge>
+        )
+      },
     },
     {
       key: 'id',

@@ -106,7 +106,7 @@ class AgreementsService {
   }
 
   static sendLitigationMessage(data: { litigation: string; message: string }) {
-    return api.post<{ message: string }>('/agreements/litigation/message', data)
+    return api.post<{ message: string }>('/agreements/litigations/message', data)
   }
 
   static sendIncorporationMessage(data: { message: string }) {

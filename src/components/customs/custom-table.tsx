@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button'
 import { ArrowUpDown } from 'lucide-react'
 
 export interface Column<T> {
-  key: keyof T
+  key: string
   title: string
   width?: string
   sortable?: boolean
@@ -33,6 +33,12 @@ interface CustomTableProps<T> {
   containerClassName?: string
 }
 
+function getNestedValue<T>(obj: T, path: string): any {
+  return path.split('.').reduce((acc: any, part: string) => {
+    return acc && acc[part] !== undefined ? acc[part] : undefined
+  }, obj)
+}
+
 function CustomTable<T>({
   data,
   columns,
@@ -42,14 +48,14 @@ function CustomTable<T>({
   containerClassName = '',
 }: CustomTableProps<T>) {
   const [sortConfig, setSortConfig] = useState<{
-    key: keyof T | null
+    key: string | null
     direction: 'asc' | 'desc'
   }>({
     key: null,
     direction: 'asc',
   })
 
-  function handleSort(key: keyof T) {
+  function handleSort(key: string) {
     setSortConfig((current) => ({
       key,
       direction: current.key === key && current.direction === 'asc' ? 'desc' : 'asc',
@@ -59,8 +65,8 @@ function CustomTable<T>({
   const sortedData = [...data].sort((a, b) => {
     if (!sortConfig.key) return 0
 
-    const aValue = a[sortConfig.key]
-    const bValue = b[sortConfig.key]
+    const aValue = getNestedValue(a, sortConfig.key)
+    const bValue = getNestedValue(b, sortConfig.key)
 
     if (aValue === bValue) return 0
     if (sortConfig.direction === 'asc') {
@@ -121,7 +127,7 @@ function CustomTable<T>({
               <TableRow key={index}>
                 {columns.map((column) => (
                   <TableCell
-                    key={String(column.key)}
+                    key={column.key}
                     className={`
                       ${column.align ? `text-${column.align}` : ''}
                       ${column.hideOnMobile ? 'hidden sm:table-cell' : ''}
@@ -130,9 +136,9 @@ function CustomTable<T>({
                     {column.actions ? (
                       <div className='flex justify-end'>{column.actions(item).menu}</div>
                     ) : column.render ? (
-                      column.render(item[column.key])
+                      column.render(getNestedValue(item, column.key))
                     ) : (
-                      String(item[column.key])
+                      String(getNestedValue(item, column.key) ?? '')
                     )}
                   </TableCell>
                 ))}
