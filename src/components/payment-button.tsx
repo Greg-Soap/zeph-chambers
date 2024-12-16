@@ -55,7 +55,9 @@ export default function PaymentButton({
   const { mutate: initializePayment, isPending } = useMutation<PaymentResponse, Error>({
     mutationFn: async () => {
       const payload = createPaymentPayload({ agreementId, agreementType, amount })
+      console.log('payload', payload)
       const response = await api.post<PaymentResponse>('/payments/initialize', payload)
+      console.log('response', response)
       return response.data
     },
     onSuccess: (data) => {

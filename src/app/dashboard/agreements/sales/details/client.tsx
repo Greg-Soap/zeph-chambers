@@ -69,7 +69,7 @@ export default function Client() {
     <>
       <LoadingOverlay isLoading={isDeleting} />
       <div className='container max-w-3xl py-6'>
-        <div className='flex items-center justify-between mb-6'>
+        <div className='flex flex-col md:flex-row  items-start md:items-center justify-between mb-6'>
           <PageHeader
             title='Sale Agreement Details'
             description='View and manage sale agreement information'
