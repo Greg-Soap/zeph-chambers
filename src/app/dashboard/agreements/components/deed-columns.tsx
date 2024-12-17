@@ -54,8 +54,8 @@ export function getDeedColumns({
       key: 'metadata.status',
       title: 'Status',
       width: 'w-[120px] min-w-[100px]',
-      render: (record: SingleDeed) => {
-        const status = record?.metadata?.status || 'unpaid'
+      render: (value?: string) => {
+        const status = value || 'unpaid'
         return (
           <Badge variant={status.toLowerCase() === 'paid' ? 'default' : 'destructive'}>
             {status}

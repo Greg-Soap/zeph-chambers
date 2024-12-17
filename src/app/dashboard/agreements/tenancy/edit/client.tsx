@@ -99,8 +99,6 @@ export default function Client() {
     )
   }
 
-  console.log({ error: form.formState.errors })
-
   return (
     <div className='container max-w-4xl py-6'>
       <PageHeader

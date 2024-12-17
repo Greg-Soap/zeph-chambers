@@ -53,8 +53,6 @@ export default function Client() {
     createTenancy({ ...data, amount: Number(data.amount) })
   }
 
-  console.log({ error: form.formState.errors, data: form.getValues() })
-
   return (
     <div className='container max-w-4xl py-6'>
       <PageHeader
