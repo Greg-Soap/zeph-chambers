@@ -28,8 +28,8 @@ export default function Footer() {
             <a className='sm:text-lg text-sm  mt-2' href='tel:+2348037055488'>
               Phone Number: <span className='font-bold hover:underline'>+2348037055488</span>
             </a>
-            <a className='sm:text-lg text-sm' href='mailto: anzeph@gmail.com'>
-              Email: <span className='font-bold hover:underline'>anzeph@gmail.com</span>
+            <a className='sm:text-lg text-sm' href='mailto: zephschambers@gmail.com'>
+              Email: <span className='font-bold hover:underline'>zephschambers@gmail.com</span>
             </a>
           </FooterSection>
 
