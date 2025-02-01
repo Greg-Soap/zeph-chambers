@@ -105,12 +105,21 @@ class AgreementsService {
     return api.get<SingleTenancy[]>('/agreements/tenancy')
   }
 
-  static sendLitigationMessage(data: { litigation: string; message: string }) {
-    return api.post<{ message: string }>('/agreements/litigations/message', data)
+  static sendLitigationMessage(data: {
+    litigation: string
+    message: string
+    email?: string
+    fullName?: string
+  }) {
+    return api.post<{ message: string }>('/messages/litigations/message', data)
   }
 
-  static sendIncorporationMessage(data: { message: string }) {
-    return api.post<{ message: string }>('/agreements/incorporations/message', data)
+  static sendIncorporationMessage(data: {
+    message: string
+    email?: string
+    fullName?: string
+  }) {
+    return api.post<{ message: string }>('/messages/incorporations/message', data)
   }
 }
 

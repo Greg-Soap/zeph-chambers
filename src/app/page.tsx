@@ -5,6 +5,9 @@ import { Button } from '@/components/ui/button'
 import { FadeText } from '@/components/animations/fade'
 import { Box2, House2 } from 'iconsax-react'
 import { CircleUserRound, Handshake } from 'lucide-react'
+import { LitigationCard } from './dashboard/litigations/litigation-form'
+import { LitigationList } from './dashboard/litigations/client'
+import IncorporationForm from './dashboard/incorporation/incorporation-form'
 
 export default function Home() {
   return (
@@ -82,6 +85,55 @@ export default function Home() {
             {services.map((service) => (
               <ServiceCard key={service.title} {...service} />
             ))}
+          </div>
+        </section>
+        <section className='bg-dark-navy w-full  my-20  rounded-lg'>
+          <div className='container py-20 '>
+            <div className='text-center space-y-4 sm:space-y-6 mb-16'>
+              <FadeText>
+                <h2 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-primary font-heading font-bold'>
+                  Litigation
+                </h2>
+              </FadeText>
+              <p className='text-lg sm:text-xl lg:text-2xl text-white font-medium max-w-3xl mx-auto'>
+                Navigating the complex landscape of legal disputes requires strategic expertise and
+                a deep understanding of the law.
+              </p>
+              <p className='text-base sm:text-lg text-accent max-w-3xl mx-auto'>
+                Our Litigation Center is your trusted resource for comprehensive insights and
+                guidance on various litigation matters. Whether you are a legal professional or an
+                individual seeking information, our dashboard provides a streamlined and informative
+                experience.
+              </p>
+            </div>
+
+            <div className='flex flex-wrap justify-center gap-4 sm:gap-6 lg:gap-8'>
+              {LitigationList.map((litigation, index) => (
+                <LitigationCard
+                  key={litigation.header}
+                  litigation={litigation}
+                  marketingPage={true}
+                />
+              ))}
+            </div>
+          </div>
+        </section>
+        <section className=' w-full  my-20  rounded-lg'>
+          <div className='container py-20 '>
+            <div className='text-center space-y-4 sm:space-y-6 mb-16'>
+              <FadeText>
+                <h2 className='text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-primary font-heading font-bold'>
+                  Contact Us
+                </h2>
+              </FadeText>
+
+              <p className='text-base sm:text-lg text-accent max-w-3xl mx-auto'>
+                We provide all services covered by the Corporate Affairs Commission, from business
+                registration through status report. Here you will discover information on how to
+                proceed with A.N ZEPH & ASSOCIATES and how we can help you.
+              </p>
+            </div>
+            <IncorporationForm marketingPage={true} />
           </div>
         </section>
       </div>

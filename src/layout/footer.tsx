@@ -10,7 +10,7 @@ export default function Footer() {
   return (
     <footer className='bg-dark-navy'>
       <div className='container mx-auto px-4'>
-        <div className='grid sm:grid-cols-4 gap-8 py-10 sm:py-20 items-start'>
+        <div className='grid sm:grid-cols-3 gap-8 py-10 sm:py-20 items-start'>
           <div>
             <img
               className='bg-primary rounded-lg p-5 w-[100px] h-[100px] sm:w-[150px] sm:h-[150px] object-contain'
@@ -25,17 +25,21 @@ export default function Footer() {
           </FooterSection>
 
           <FooterSection title='Contact Us'>
-            <p className='sm:text-lg text-sm  mt-2'>Phone Number: 123-456-7890</p>
-            <p className='sm:text-lg text-sm '>Email: anzeph@gmail.com</p>
+            <a className='sm:text-lg text-sm  mt-2' href='tel:+2348037055488'>
+              Phone Number: <span className='font-bold hover:underline'>+2348037055488</span>
+            </a>
+            <a className='sm:text-lg text-sm' href='mailto: anzeph@gmail.com'>
+              Email: <span className='font-bold hover:underline'>anzeph@gmail.com</span>
+            </a>
           </FooterSection>
 
-          <FooterSection title='Social'>
+          {/* <FooterSection title='Social'>
             <div className='flex gap-4 mt-2'>
               {socials.map((social) => (
                 <SocialIcon key={social.href} {...social} />
               ))}
             </div>
-          </FooterSection>
+          </FooterSection> */}
         </div>
         <div className='border-t mx-auto' />
         <p className='sm:text-lg text-sm  text-center py-8'>
@@ -53,7 +57,7 @@ interface FooterSectionProps {
 
 function FooterSection({ title, children }: FooterSectionProps) {
   return (
-    <div>
+    <div className='flex flex-col gap-2'>
       <h2 className='text-primary text-2xl font-bold'>{title}</h2>
       {children}
     </div>

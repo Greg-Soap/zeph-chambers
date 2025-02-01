@@ -1,19 +1,7 @@
 'use client'
-
 import Image from 'next/image'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useMutation } from '@tanstack/react-query'
-import { toast } from 'sonner'
-
 import logoIm from '../../../../public/assets/CAC-Logo.png'
-import { Button } from '@/components/ui/button'
-import { z } from 'zod'
-import { FormField } from '@/components/customs/custom-form'
-import agreementsService from '@/services/agreements.service'
-import { FormBase } from '@/components/customs/custom-form'
-import { CustomInput } from '@/components/customs/custom-input'
-
+import IncorporationForm from './incorporation-form'
 interface ServiceCardProps {
   title: string
   items: string[]
@@ -57,35 +45,7 @@ const postIncorporationItems = [
   "Filing of NGO's such as Church, Mosque, Foundation, Club, etc",
 ]
 
-const incorporationSchema = z.object({
-  message: z.string().min(1, { message: 'Message is required' }),
-})
-
-type IncorporationFormData = z.infer<typeof incorporationSchema>
-
 export default function Incorporation() {
-  const form = useForm<IncorporationFormData>({
-    resolver: zodResolver(incorporationSchema),
-    defaultValues: {
-      message: '',
-    },
-  })
-
-  const { mutate: submitInquiry, isPending } = useMutation({
-    mutationFn: agreementsService.sendIncorporationMessage,
-    onSuccess: () => {
-      toast.success('Your inquiry has been submitted successfully')
-      form.reset()
-    },
-    onError: (error: any) => {
-      toast.error(error?.response?.data?.message || 'Failed to submit inquiry')
-    },
-  })
-
-  function handleSubmit(data: IncorporationFormData) {
-    submitInquiry(data)
-  }
-
   return (
     <div className='w-full min-h-screen bg-navy text-white p-4 sm:p-6 lg:p-8'>
       <div className='max-w-7xl mx-auto space-y-8 sm:space-y-10 lg:space-y-12'>
@@ -110,32 +70,7 @@ export default function Incorporation() {
           <ServiceCard title='PRE-INCORPORATION' items={preIncorporationItems} />
           <ServiceCard title='POST-INCORPORATION' items={postIncorporationItems} />
         </div>
-
-        <FormBase
-          form={form}
-          onSubmit={handleSubmit}
-          className='max-w-2xl mx-auto space-y-4 sm:space-y-6'>
-          <FormField
-            form={form}
-            name='message'
-            label='Your Inquiry'
-            description='Tell us how we may be of help to you'
-            showMessage>
-            <CustomInput
-              variant='textarea'
-              placeholder='Tell us how we may be of help to you'
-              className='min-h-[150px] sm:min-h-[180px] lg:min-h-[200px] resize-none'
-              disabled={isPending}
-            />
-          </FormField>
-
-          <Button
-            type='submit'
-            className='w-full text-base sm:text-lg py-2 sm:py-3'
-            disabled={isPending}>
-            {isPending ? 'Submitting...' : 'Submit'}
-          </Button>
-        </FormBase>
+        <IncorporationForm />
       </div>
     </div>
   )
